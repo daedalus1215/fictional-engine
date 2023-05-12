@@ -15,6 +15,9 @@
         <module>order-domain</module>
         <module>order-application</module>
         <module>order-dataaccess</module>
+        <module>order-messaging</module>
+        <module>order-domain/order-domain-core</module>
+        <module>order-domain/order-application-service</module>
     </modules>
 
     <properties>
