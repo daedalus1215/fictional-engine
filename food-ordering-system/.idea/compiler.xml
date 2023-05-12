@@ -6,12 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="order-application" />
         <module name="order-messaging" />
         <module name="order-domain" />
-        <module name="order-domain-core" />
         <module name="order-application-service" />
+        <module name="order-application" />
+        <module name="order-domain-core" />
         <module name="order-dataaccess" />
+        <module name="order-container" />
       </profile>
     </annotationProcessing>
   </component>
@@ -20,6 +21,7 @@
       <module name="food-ordering-system" options="-parameters" />
       <module name="order-application" options="-parameters" />
       <module name="order-application-service" options="-parameters" />
+      <module name="order-container" options="-parameters" />
       <module name="order-dataaccess" options="-parameters" />
       <module name="order-domain" options="-parameters" />
       <module name="order-domain-core" options="-parameters" />

@@ -18,6 +18,7 @@
         <module>order-messaging</module>
         <module>order-domain/order-domain-core</module>
         <module>order-domain/order-application-service</module>
+        <module>order-container</module>
     </modules>
 
     <properties>
