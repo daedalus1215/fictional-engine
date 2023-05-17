@@ -1,8 +1,8 @@
-package org.example;
+package org.example.hash;
 
 import java.util.HashMap;
 
-public class Solutions {
+public class TwoSumSolutions {
     public static void main(String[] args) {
 
     }
