@@ -33,15 +33,41 @@ public class Order extends AggregateRoot<OrderId> {
         validateItemsPrice();
     }
 
+    private void validateItemsPrice() {
+        Money orderItemsTotal = items.stream().map(orderItem -> {
+            validateItemPrice(orderItem);
+            return orderItem.getSubTotal();
+        }).reduce(Money.ZERO, Money::add);
+
+        if (price.equals(orderItemsTotal)) {
+            throw new OrderDomainException("Total price: " + price.getAmount() + " is not equal to Order items total: " + orderItemsTotal.getAmount() + "!");
+        }
+    }
+
+    private void validateItemPrice(OrderItem orderItem) {
+        if (!orderItem.isPriceValid()) {
+            throw new OrderDomainException("Order item price: "
+                    + orderItem.getPrice().getAmount()
+                    + " is not valid for product"
+                    + orderItem.getProduct().getId().getValue());
+        }
+    }
+
+    private void validateTotalPrice() {
+        if (price == null || !price.isGreaterThanZero()) {
+            throw new OrderDomainException("Total price must be greater than zero");
+        }
+    }
+
     private void validateInitialOrder() throws OrderDomainException {
-        if(orderStatus != null || getId() != null) {
+        if (orderStatus != null || getId() != null) {
             throw new OrderDomainException();
         }
     }
 
     private void initializeOrderItems() {
         long itemId = 1;
-        for(OrderItem orderItem: items) {
+        for (OrderItem orderItem : items) {
             orderItem.initializeOrderItem(super.getId(), new OrderItemId(itemId++));
         }
     }
@@ -100,11 +126,11 @@ public class Order extends AggregateRoot<OrderId> {
 
     public static final class Builder {
         private OrderId orderId;
-        private  CustomerId customerId;
-        private  RestaurantId restaurantId;
-        private  StreetAddress deliveryAddress;
-        private  Money price;
-        private  List<OrderItem> items;
+        private CustomerId customerId;
+        private RestaurantId restaurantId;
+        private StreetAddress deliveryAddress;
+        private Money price;
+        private List<OrderItem> items;
         private TrackingId trackingId;
         private OrderStatus orderStatus;
         private List<String> failureMessages;
