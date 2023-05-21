@@ -33,6 +33,19 @@ public class Order extends AggregateRoot<OrderId> {
         validateItemsPrice();
     }
 
+    public void pay() {
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new OrderDomainException("Order is not in correct state for pay operation!");
+        }
+        orderStatus = OrderStatus.PAID;
+    }
+
+    public void approved() {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not in correct state for approved operation!");
+        }
+    }
+
     private void validateItemsPrice() {
         Money orderItemsTotal = items.stream().map(orderItem -> {
             validateItemPrice(orderItem);
@@ -46,10 +59,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     private void validateItemPrice(OrderItem orderItem) {
         if (!orderItem.isPriceValid()) {
-            throw new OrderDomainException("Order item price: "
-                    + orderItem.getPrice().getAmount()
-                    + " is not valid for product"
-                    + orderItem.getProduct().getId().getValue());
+            throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount() + " is not valid for product" + orderItem.getProduct().getId().getValue());
         }
     }
 
