@@ -44,6 +44,33 @@ public class Order extends AggregateRoot<OrderId> {
         if (orderStatus != OrderStatus.PAID) {
             throw new OrderDomainException("Order is not in correct state for approved operation!");
         }
+        orderStatus = OrderStatus.APPROVED;
+    }
+
+    public void initCancel(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not in correct state for cancel operation");
+        }
+        orderStatus = OrderStatus.CANCELLING;
+        updateFailureMessages(failureMessages);
+    }
+
+    private void updateFailureMessages(List<String> failureMessages) {
+        if (this.failureMessages != null && failureMessages != null) {
+            this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).toList());
+        }
+        if (this.failureMessages == null) {
+            this.failureMessages = failureMessages;
+        }
+    }
+
+    public void cancel(List<String> failureMessages) {
+        if (orderStatus == OrderStatus.CANCELLING || orderStatus == OrderStatus.PENDING) {
+            throw new OrderDomainException("Order is not in correct state for cancel operation!");
+        }
+
+        orderStatus = OrderStatus.CANCELLED;
+        updateFailureMessages(failureMessages);
     }
 
     private void validateItemsPrice() {
@@ -71,7 +98,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     private void validateInitialOrder() throws OrderDomainException {
         if (orderStatus != null || getId() != null) {
-            throw new OrderDomainException();
+            throw new OrderDomainException("Initial Order is not valid, missing order status or id");
         }
     }
 
