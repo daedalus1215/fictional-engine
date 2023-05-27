@@ -1,4 +1,4 @@
-package com.food.ordering.system.order.service.domain.dto;
+package com.food.ordering.system.order.service.domain.dto.track;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,5 +13,5 @@ import java.util.UUID;
 public class TrackOrderQuery {
     @NotNull
     private final UUID orderTrackingId;
-    
+
 }
