@@ -13,13 +13,17 @@ import org.springframework.stereotype.Component;
 public class OrderCreateCommandHandler {
     private final OrderDataMapper orderDataMapper;
     private final OrderCreateHelper orderCreateHelper;
-
     private final OrderCreatedPaymentRequestMessagePublisher orderCreatedPaymentRequestMessagePublisher;
+    private final ApplicationDomainEventPublisher applicationDomainEventPublisher;
 
-    public OrderCreateCommandHandler(OrderDataMapper orderDataMapper, OrderCreateHelper orderCreateHelper, OrderCreatedPaymentRequestMessagePublisher orderCreatedPaymentRequestMessagePublisher) {
+    public OrderCreateCommandHandler(OrderDataMapper orderDataMapper,
+                                     OrderCreateHelper orderCreateHelper,
+                                     OrderCreatedPaymentRequestMessagePublisher orderCreatedPaymentRequestMessagePublisher,
+                                     ApplicationDomainEventPublisher applicationDomainEventPublisher) {
         this.orderDataMapper = orderDataMapper;
         this.orderCreateHelper = orderCreateHelper;
         this.orderCreatedPaymentRequestMessagePublisher = orderCreatedPaymentRequestMessagePublisher;
+        this.applicationDomainEventPublisher = applicationDomainEventPublisher;
     }
 
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
@@ -28,5 +32,4 @@ public class OrderCreateCommandHandler {
         orderCreatedPaymentRequestMessagePublisher.publish(orderCreatedEvent);
         return orderDataMapper.orderToCreateOrderResponse(orderCreatedEvent.getOrder());
     }
-
 }
