@@ -2,27 +2,32 @@ package com.food.ordering.system.order.service.domain;
 
 import com.food.ordering.system.domain.valueobject.*;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
+import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.system.order.service.domain.dto.create.OrderAddress;
 import com.food.ordering.system.order.service.domain.dto.create.OrderItem;
 import com.food.ordering.system.order.service.domain.entity.Customer;
 import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.entity.Product;
 import com.food.ordering.system.order.service.domain.entity.Restaurant;
+import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.mapper.OrderDataMapper;
 import com.food.ordering.system.order.service.domain.ports.input.service.OrderApplicationService;
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.security.PublicKey;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -45,10 +50,10 @@ public class OrderApplicationServiceTest {
     private CreateOrderCommand createOrderCommand;
     private CreateOrderCommand createOrderCommandWrongPrice;
     private CreateOrderCommand createOrderCommandWrongProductPrice;
-    private final UUID CUSTOMER_ID = UUID.fromString("d214b58-8249-4dc5-89a3-51fd148cfb41");
-    private final UUID RESTAURANT_ID = UUID.fromString("yt14b58-8249-4dc5-89a3-51fd148cfb41");
-    private final UUID PRODUCT_ID = UUID.fromString("pp14b58-8249-4dc5-89a3-51fd148cfb41");
-    private final UUID ORDER_ID = UUID.fromString("ygh4b58-8249-4dc5-89a3-51fd148cfb41");
+    private final UUID CUSTOMER_ID = UUID.fromString("ec573e18-1fa9-49c4-8b34-61962436a836");
+    private final UUID RESTAURANT_ID = UUID.fromString("096662f2-a1d5-4d5b-b821-e5158b43fed7");
+    private final UUID PRODUCT_ID = UUID.fromString("0e471038-76d5-44b6-8434-a7d01dbf9781");
+    private final UUID ORDER_ID = UUID.fromString("1460aefa-f965-4880-8972-9fb62564319e");
     private final BigDecimal PRICE = new BigDecimal("200.00");
 
     @BeforeAll
@@ -79,7 +84,7 @@ public class OrderApplicationServiceTest {
                 .restaurantId(RESTAURANT_ID)
                 .address(OrderAddress.builder()
                         .build())
-                .price(PRICE)
+                .price(new BigDecimal("250.00"))
                 .items(List.of(OrderItem.builder()
                                 .productId(PRODUCT_ID)
                                 .quantity(1)
@@ -99,7 +104,7 @@ public class OrderApplicationServiceTest {
                 .restaurantId(RESTAURANT_ID)
                 .address(OrderAddress.builder()
                         .build())
-                .price(PRICE)
+                .price(new BigDecimal("210.00"))
                 .items(List.of(OrderItem.builder()
                                 .productId(PRODUCT_ID)
                                 .quantity(1)
@@ -138,4 +143,17 @@ public class OrderApplicationServiceTest {
                 .thenReturn(order);
     }
 
+    @Test
+    public void testCreateOrder() {
+        CreateOrderResponse createOrderResponse = orderApplicationService.createOrder(createOrderCommand);
+        assertEquals(createOrderResponse.getOrderStatus(), OrderStatus.PENDING);
+        assertEquals(createOrderResponse.getMessage(), "Order Created Successfully");
+        assertNotNull(createOrderResponse.getOrderTrackingId());
+    }
+
+    @Test
+    public void testCreateOrderWithWrongTotalPrice() {
+        OrderDomainException orderDomainException = assertThrows(OrderDomainException.class, () -> orderApplicationService.createOrder(createOrderCommandWrongPrice));
+        assertEquals(orderDomainException.getMessage(), "Total price: 250.00 is not equal to Order items total: 200.00!");
+    }
 }
