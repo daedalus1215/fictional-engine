@@ -60,10 +60,11 @@ public class OrderDataMapper {
                 address.getCity());
     }
 
-    public CreateOrderResponse orderToCreateOrderResponse(Order orderResult) {
+    public CreateOrderResponse orderToCreateOrderResponse(Order orderResult, String message) {
         return CreateOrderResponse.builder()
                 .orderTrackingId(UUID.randomUUID())
                 .orderStatus(orderResult.getOrderStatus())
+                .message(message)
                 .build();
     }
 
