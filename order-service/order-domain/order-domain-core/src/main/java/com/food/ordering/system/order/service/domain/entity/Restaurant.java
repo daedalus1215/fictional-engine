@@ -56,6 +56,11 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
             return this;
         }
 
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
+        }
+
 
         public Restaurant build() {
             return new Restaurant(this);
