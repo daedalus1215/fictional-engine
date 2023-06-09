@@ -21,7 +21,6 @@
         <module>common</module>
         <module>infrastructure</module>
         <module>infrastructure/kafka</module>
-        <module>infrastructure/kafka-model</module>
     </modules>
 
     <properties>
