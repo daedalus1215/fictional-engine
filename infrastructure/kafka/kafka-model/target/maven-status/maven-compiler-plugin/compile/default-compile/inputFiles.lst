@@ -1,0 +1,8 @@
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/PaymentStatus.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/Product.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/RestaurantApprovalRequestAvroModel.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/RestaurantApprovalResponseAvroModel.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/PaymentOrderStatus.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/PaymentResponseAvroModel.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/RestaurantOrderStatus.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-model/src/main/java/com/food/ordering/system/kafka/order/avro/model/OrderApprovalStatus.java
