@@ -3,6 +3,7 @@ package com.food.ordering.system.kafka.producer.service.impl;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
+import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,12 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
     @Override
     public void send(String topicName, K key, V message, ListenableFutureCallback<SendResult<K, V>> callback) {
         log.info("sending message={} to topic={}", message, topicName);
+        try {
         ListenableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topicName, key, message);
         kafkaResultFuture.addCallback(callback);
+        } catch (KafkaException e) {
+            e.printStackTrace();
+            //@TODO: Left off right here 7:33
+        }
     }
 }
