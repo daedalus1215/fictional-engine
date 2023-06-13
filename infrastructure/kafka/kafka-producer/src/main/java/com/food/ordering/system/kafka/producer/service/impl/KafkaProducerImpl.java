@@ -1,5 +1,6 @@
 package com.food.ordering.system.kafka.producer.service.impl;
 
+import com.food.ordering.system.kafka.producer.exception.KafkaProducerException;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import javax.annotation.PreDestroy;
 import java.io.Serializable;
 
 @Slf4j
@@ -26,11 +28,22 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
     public void send(String topicName, K key, V message, ListenableFutureCallback<SendResult<K, V>> callback) {
         log.info("sending message={} to topic={}", message, topicName);
         try {
-        ListenableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topicName, key, message);
-        kafkaResultFuture.addCallback(callback);
+            ListenableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topicName, key, message);
+            kafkaResultFuture.addCallback(callback);
         } catch (KafkaException e) {
-            e.printStackTrace();
-            //@TODO: Left off right here 7:33
+            log.error("Error on kafka producer with key: {}, message: {} and exception: {}", key, message, e.getMessage());
+            throw new KafkaProducerException("Error on kafka producer with key: " + key + " and message: " + message);
+        }
+    }
+
+    /**
+     * Called when app is shutting down (thank you PreDestroy annotation).
+     */
+    @PreDestroy
+    public void close() {
+        if (kafkaTemplate != null) {
+            log.info("Closing kafka producer!");
+            kafkaTemplate.destroy();
         }
     }
 }
