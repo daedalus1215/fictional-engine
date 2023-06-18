@@ -15,7 +15,7 @@ import java.util.Objects;
 public class OrderItemEntityId implements Serializable {
     private Long id;
     private OrderEntity order;
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
