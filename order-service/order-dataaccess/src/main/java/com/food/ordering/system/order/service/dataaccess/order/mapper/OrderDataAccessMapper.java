@@ -1,7 +1,10 @@
 package com.food.ordering.system.order.service.dataaccess.order.mapper;
 
+import com.food.ordering.system.application.domain.valueobject.*;
 import com.food.ordering.system.application.order.service.domain.entity.Order;
 import com.food.ordering.system.application.order.service.domain.entity.OrderItem;
+import com.food.ordering.system.application.order.service.domain.entity.Product;
+import com.food.ordering.system.application.order.service.domain.valueobject.OrderItemId;
 import com.food.ordering.system.application.order.service.domain.valueobject.StreetAddress;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderAddressEntity;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderEntity;
@@ -32,6 +35,37 @@ public class OrderDataAccessMapper {
         orderEntity.getItems().forEach(orderItemEntity -> orderItemEntity.setOrder(orderEntity));
 
         return orderEntity;
+    }
+
+    public Order orderEntityToOrder(OrderEntity orderEntity) {
+        return Order.builder()
+                .orderId(new OrderId(orderEntity.getId()))
+                .customerId(new CustomerId(orderEntity.getCustomerId()))
+                .restaurantId(new RestaurantId(orderEntity.getRestaurantId()))
+                .deliveryAddress(addressEntityToDeliveryAddress(orderEntity.getAddress()))
+                .price(new Money(orderEntity.getPrice()))
+                .items(orderItemEntitiesToOrderItems(orderEntity.getItems()))
+                .build();
+    }
+
+    private List<OrderItem> orderItemEntitiesToOrderItems(List<OrderItemEntity> items) {
+        return items.stream()
+                .map(orderItemEntity -> OrderItem.builder()
+                        .orderItemId(new OrderItemId(orderItemEntity.getId()))
+                        .product(new Product(new ProductId(orderItemEntity.getProductId())))
+                        .price(new Money(orderItemEntity.getPrice()))
+                        .quantity(orderItemEntity.getQuantity())
+                        .subTotal(new Money(orderItemEntity.getSubTotal()))
+                        .build())
+                .collect(toList());
+    }
+
+    private StreetAddress addressEntityToDeliveryAddress(OrderAddressEntity address) {
+        return new StreetAddress(address.getId(),
+                address.getStreet(),
+                address.getPostCode(),
+                address.getCity()
+        );
     }
 
     private List<OrderItemEntity> orderItemsToOrderItemEntities(List<OrderItem> items) {
