@@ -6,11 +6,14 @@ import com.food.ordering.system.application.order.service.domain.entity.OrderIte
 import com.food.ordering.system.application.order.service.domain.entity.Product;
 import com.food.ordering.system.application.order.service.domain.valueobject.OrderItemId;
 import com.food.ordering.system.application.order.service.domain.valueobject.StreetAddress;
+import com.food.ordering.system.application.order.service.domain.valueobject.TrackingId;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderAddressEntity;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderEntity;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderItemEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.food.ordering.system.application.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
@@ -45,6 +48,10 @@ public class OrderDataAccessMapper {
                 .deliveryAddress(addressEntityToDeliveryAddress(orderEntity.getAddress()))
                 .price(new Money(orderEntity.getPrice()))
                 .items(orderItemEntitiesToOrderItems(orderEntity.getItems()))
+                .trackingId(new TrackingId(orderEntity.getTrackingId()))
+                .orderStatus(orderEntity.getOrderStatus())
+                .failureMessages(orderEntity.getFailureMessages().isEmpty() ? new ArrayList<>() :
+                        new ArrayList<>(Arrays.asList(orderEntity.getFailureMessages().split(FAILURE_MESSAGE_DELIMITER))))
                 .build();
     }
 
