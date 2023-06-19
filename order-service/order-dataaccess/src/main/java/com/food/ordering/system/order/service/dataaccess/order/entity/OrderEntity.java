@@ -1,7 +1,6 @@
 package com.food.ordering.system.order.service.dataaccess.order.entity;
 
 import com.food.ordering.system.application.domain.valueobject.OrderStatus;
-import com.food.ordering.system.application.order.service.domain.dto.create.OrderAddress;
 import lombok.*;
 
 import javax.persistence.*;
