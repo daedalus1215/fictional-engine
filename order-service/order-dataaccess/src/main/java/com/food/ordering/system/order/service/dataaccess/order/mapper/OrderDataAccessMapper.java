@@ -1,6 +1,5 @@
 package com.food.ordering.system.order.service.dataaccess.order.mapper;
 
-import com.food.ordering.system.application.order.service.domain.dto.create.OrderAddress;
 import com.food.ordering.system.application.order.service.domain.entity.Order;
 import com.food.ordering.system.application.order.service.domain.entity.OrderItem;
 import com.food.ordering.system.application.order.service.domain.valueobject.StreetAddress;
@@ -22,14 +21,14 @@ public class OrderDataAccessMapper {
                 .customerId(order.getCustomerId().getValue())
                 .restaurantId(order.getRestaurantId().getValue())
                 .trackingId(order.getTrackingId().getValue())
-                .orderAddress(deliveryAddressToAddressEntity(order.getDeliveryAddress()))
+                .address(deliveryAddressToAddressEntity(order.getDeliveryAddress()))
                 .price(order.getPrice().getAmount())
                 .items(orderItemsToOrderItemEntities(order.getItems()))
                 .orderStatus(order.getOrderStatus())
                 .failureMessages(order.getFailureMessages() != null ?
                         String.join(FAILURE_MESSAGE_DELIMITER, order.getFailureMessages()) : "")
                 .build();
-        orderEntity.getOrderAddress().setOrderEntity(orderEntity);
+        orderEntity.getAddress().setOrder(orderEntity);
         orderEntity.getItems().forEach(orderItemEntity -> orderItemEntity.setOrder(orderEntity));
 
         return orderEntity;
