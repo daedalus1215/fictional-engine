@@ -1,14 +1,39 @@
 package com.food.order.ordering.system.order.service.service.messaging.mapper;
 
-import com.food.ordering.system.application.order.service.domain.entity.Order;
-import com.food.ordering.system.application.order.service.domain.event.OrderCreatedEvent;
+import com.food.ordering.system.order.service.domain.entity.Order;
+import com.food.ordering.system.order.service.domain.event.OrderCancelledEvent;
+import com.food.ordering.system.order.service.domain.event.OrderCreatedEvent;
+import com.food.ordering.system.kafka.order.avro.model.PaymentOrderStatus;
 import com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 public class OrderMessagingDataMapper {
     public PaymentRequestAvroModel orderCreatedEventToPaymentRequestAvroModel(OrderCreatedEvent orderCreatedEvent) {
-        Order order = orderCreatedEvent.getOrder();
-        return PaymentRequestAvroModel.bu
+        final Order order = orderCreatedEvent.getOrder();
+        return PaymentRequestAvroModel.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .setSagaId("")
+                .setCustomerId(order.getCustomerId().getValue().toString())
+                .setOrderId(order.getId().getValue().toString())
+                .setPrice(order.getPrice().getAmount())
+                .setCreatedAt(orderCreatedEvent.getCreatedAt().toInstant())
+                .setPaymentOrderStatus(PaymentOrderStatus.PENDING)
+                .build();
+    }
+
+    public PaymentRequestAvroModel orderCancelledEventToPaymentRequestAvroModel(OrderCancelledEvent orderCancelledEvent) {
+        final Order order = orderCancelledEvent.getOrder();
+        return PaymentRequestAvroModel.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .setSagaId("")
+                .setCustomerId(order.getCustomerId().getValue().toString())
+                .setOrderId(order.getId().getValue().toString())
+                .setPrice(order.getPrice().getAmount())
+                .setCreatedAt(orderCancelledEvent.getCreatedAt().toInstant())
+                .setPaymentOrderStatus(PaymentOrderStatus.CANCELLED)
+                .build();
     }
 }
