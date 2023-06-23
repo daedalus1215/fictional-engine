@@ -45,19 +45,21 @@
       "name": "products",
       "type": {
         "type": "array",
-        "name": "Product",
-        "type": "record",
-        "fields": [
-          {
-            "name": "id",
-            "type": "string",
-            "logicalType": "uuid"
-          },
-          {
-            "name": "quantity",
-            "type": "int"
-          }
-        ]
+        "items": {
+          "name": "Product",
+          "type": "record",
+          "fields": [
+            {
+              "name": "id",
+              "type": "string",
+              "logicalType": "uuid"
+            },
+            {
+              "name": "quantity",
+              "type": "int"
+            }
+          ]
+        }
       }
     },
     {
