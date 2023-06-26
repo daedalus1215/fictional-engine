@@ -1,4 +1,4 @@
-package com.food.ordering.system.application.kafka.config.data;
+package com.food.ordering.system.kafka.config;
 
 
 import lombok.Data;
