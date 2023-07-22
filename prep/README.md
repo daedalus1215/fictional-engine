@@ -1,0 +1,2 @@
+ran these in postgres
+
