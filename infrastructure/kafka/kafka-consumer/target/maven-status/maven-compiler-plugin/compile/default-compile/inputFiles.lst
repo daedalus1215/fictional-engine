@@ -1,2 +1,2 @@
-/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-consumer/src/main/java/com/food/ordering/system/kafka/consumer/config/KafkaConsumerConfig.java
-/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-consumer/src/main/java/com/food/ordering/system/kafka/consumer/KafkaConsumer.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-consumer/src/main/java/com/food/ordering/system/application/kafka/consumer/KafkaConsumer.java
+/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-consumer/src/main/java/com/food/ordering/system/application/kafka/consumer/config/KafkaConsumerConfig.java

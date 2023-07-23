@@ -1,1 +1,4 @@
-com/food/ordering/system/kafka/producer/KafkaProducerConfig.class
+com/food/ordering/system/application/kafka/producer/exception/KafkaProducerException.class
+com/food/ordering/system/application/kafka/producer/KafkaProducerConfig.class
+com/food/ordering/system/application/kafka/producer/service/impl/KafkaProducerImpl.class
+com/food/ordering/system/application/kafka/producer/service/KafkaProducer.class
