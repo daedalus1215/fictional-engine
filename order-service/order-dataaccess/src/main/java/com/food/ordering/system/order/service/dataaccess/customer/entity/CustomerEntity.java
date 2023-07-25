@@ -22,4 +22,4 @@ public class CustomerEntity {
 
     @Id
     private UUID id;
-}
+};
