@@ -35,7 +35,7 @@ BEGIN
     refresh materialized VIEW customer.order_customer_m_view;
 return null;
 END;
-'  LANGUAGE plpgsql;
+ ';
 
 DROP TRIGGER IF EXISTS order_customer_m_view ON customer.customers;
 

@@ -1,5 +1,6 @@
 # Compiled class file
 *.class
+infrastructure/docker-compose/volumes/*
 
 # Log file
 *.log

@@ -2,7 +2,7 @@ DROP SCHEMA IF EXISTS "order" CASCADE;
 
 CREATE SCHEMA "order";
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 DROP TYPE IF EXISTS order_status;
 
@@ -19,7 +19,7 @@ CREATE TABLE "order".orders
     order_status order_status NOT NULL,
     failure_messages character varying COLLATE pg_catalog."default",
     CONSTRAINT orders_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE "order".order_items
 (
@@ -49,4 +49,4 @@ CREATE TABLE "order".order_address
     postal_code character varying COLLATE pg_catalog."default" NOT NULL,
     city character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT order_address_pkey PRIMARY KEY (id, order_id)
-)
+);
