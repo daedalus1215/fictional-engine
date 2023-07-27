@@ -28,6 +28,7 @@
         <module>payment-service/payment-dataaccess</module>
         <module>payment-service/payment-messaging</module>
         <module>payment-service/payment-container</module>
+        <module>payment-service/payment-domain/payment-domain-core</module>
     </modules>
 
     <properties>
