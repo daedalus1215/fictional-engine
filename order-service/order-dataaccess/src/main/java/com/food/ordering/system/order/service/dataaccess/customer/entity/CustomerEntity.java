@@ -1,14 +1,8 @@
 package com.food.ordering.system.order.service.dataaccess.customer.entity;
 
-import com.food.ordering.system.application.domain.valueobject.OrderStatus;
-import com.food.ordering.system.order.service.dataaccess.order.entity.OrderAddressEntity;
-import com.food.ordering.system.order.service.dataaccess.order.entity.OrderItemEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter

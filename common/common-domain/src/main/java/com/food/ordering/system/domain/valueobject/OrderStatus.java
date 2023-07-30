@@ -1,4 +1,4 @@
-package com.food.ordering.system.application.domain.valueobject;
+package com.food.ordering.system.domain.valueobject;
 
 public enum OrderStatus {
     PENDING, PAID, APPROVED, CANCELLING, CANCELLED

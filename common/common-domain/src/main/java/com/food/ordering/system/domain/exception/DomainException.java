@@ -1,4 +1,4 @@
-package com.food.ordering.system.application.domain.exception;
+package com.food.ordering.system.domain.exception;
 
 /**
  * With Domain specific exceptions extending this DomainException we know, right off the bat if there is a DomainException

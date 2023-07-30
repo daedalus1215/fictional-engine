@@ -1,6 +1,6 @@
 package com.food.ordering.system.payment.service.domain.events;
 
-import com.food.ordering.system.application.domain.event.DomainEvent;
+import com.food.ordering.system.domain.event.DomainEvent;
 import com.food.ordering.system.payment.service.domain.entity.Payment;
 
 import java.time.ZonedDateTime;
