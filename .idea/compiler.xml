@@ -19,7 +19,6 @@
         <module name="payment-dataaccess" />
         <module name="order-dataaccess" />
         <module name="order-container" />
-        <module name="payment-domain" />
         <module name="order-messaging" />
         <module name="payment-service" />
         <module name="payment-application-service" />
