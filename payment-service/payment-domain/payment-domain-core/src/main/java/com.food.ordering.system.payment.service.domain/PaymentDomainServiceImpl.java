@@ -6,7 +6,7 @@ import com.food.ordering.system.domain.valueobject.PaymentStatus;
 import com.food.ordering.system.payment.service.domain.entity.CreditEntry;
 import com.food.ordering.system.payment.service.domain.entity.CreditHistory;
 import com.food.ordering.system.payment.service.domain.entity.Payment;
-import com.food.ordering.system.payment.service.domain.events.PaymentCanceledEvent;
+import com.food.ordering.system.payment.service.domain.events.PaymentCancelledEvent;
 import com.food.ordering.system.payment.service.domain.events.PaymentCompletedEvent;
 import com.food.ordering.system.payment.service.domain.events.PaymentEvent;
 import com.food.ordering.system.payment.service.domain.events.PaymentFailedEvent;
@@ -105,7 +105,7 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         if (failureMessages.isEmpty()) {
             log.info("Payment is cancelled for order id: {}", payment.getOrderId().getValue());
             payment.updateStatus(PaymentStatus.CANCELLED);
-            return new PaymentCanceledEvent(payment, ZonedDateTime.now(ZoneId.of(DomainConstants.UTC)), failureMessages);
+            return new PaymentCancelledEvent(payment, ZonedDateTime.now(ZoneId.of(DomainConstants.UTC)), failureMessages);
         } else {
             log.info("Payment cancellation is failed for order id: {}", payment.getOrderId().getValue());
             payment.updateStatus(PaymentStatus.FAILED);
