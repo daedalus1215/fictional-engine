@@ -1,29 +1,20 @@
 package com.food.ordering.system.order.service.domain.event;
 
-import com.food.ordering.system.domain.event.DomainEvent;
+import com.food.ordering.system.domain.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.order.service.domain.entity.Order;
 
 import java.time.ZonedDateTime;
 
-public class OrderCancelledEvent implements DomainEvent<Order> {
+public class OrderCancelledEvent extends OrderEvent {
+    private final DomainEventPublisher<OrderCancelledEvent> orderCancelledEventDomainEventPublisher;
 
-    private final Order order;
-    private final ZonedDateTime date;
-
-    public OrderCancelledEvent(Order order, ZonedDateTime date) {
-        this.order = order;
-        this.date = date;
+    public OrderCancelledEvent(Order order, ZonedDateTime createdAt, DomainEventPublisher<OrderCancelledEvent> orderCancelledEventDomainEventPublisher) {
+        super(order, createdAt);
+        this.orderCancelledEventDomainEventPublisher = orderCancelledEventDomainEventPublisher;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public ZonedDateTime getDate() {
-        return date;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return date;
+    @Override
+    public void fire() {
+        orderCancelledEventDomainEventPublisher.publish(this);
     }
 }
