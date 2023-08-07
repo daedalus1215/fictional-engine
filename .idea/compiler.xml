@@ -16,11 +16,9 @@
         <module name="kafka-producer" />
         <module name="payment-messaging" />
         <module name="kafka-config-data" />
-        <module name="payment-dataaccess" />
         <module name="order-dataaccess" />
         <module name="order-container" />
         <module name="order-messaging" />
-        <module name="payment-service" />
         <module name="payment-application-service" />
         <module name="payment-container" />
         <module name="common-domain" />
