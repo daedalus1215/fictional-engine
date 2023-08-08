@@ -1,5 +1,6 @@
 package com.food.ordering.system.payment.service.messaging.mapper;
 
+import com.food.ordering.system.domain.valueobject.PaymentOrderStatus;
 import com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel;
 import com.food.ordering.system.kafka.order.avro.model.PaymentStatus;
 import com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel;
@@ -58,7 +59,12 @@ public class PaymentMessagingDataMapper {
     public PaymentRequest paymentRequestAvroModelToPaymentRequest(PaymentRequestAvroModel paymentRequestAvroModel) {
         return PaymentRequest.builder()
                 .id(paymentRequestAvroModel.getId())
-                .sagaId()
+                .sagaId(paymentRequestAvroModel.getSagaId())
+                .customerId(paymentRequestAvroModel.getCustomerId())
+                .orderId(paymentRequestAvroModel.getOrderId())
+                .price(paymentRequestAvroModel.getPrice())
+                .createdAt(paymentRequestAvroModel.getCreatedAt())
+                .paymentOrderStatus(PaymentOrderStatus.valueOf(paymentRequestAvroModel.getPaymentOrderStatus().name()))
                 .build();
     }
 }
