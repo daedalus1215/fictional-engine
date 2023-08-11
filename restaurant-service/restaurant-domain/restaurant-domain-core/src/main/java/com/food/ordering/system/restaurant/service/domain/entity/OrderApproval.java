@@ -60,8 +60,23 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
         public Builder() {
         }
 
-        public Builder id(OrderApprovalId val) {
+        public Builder orderApprovalId(OrderApprovalId val) {
             orderApprovalId = val;
+            return this;
+        }
+
+        public Builder restaurantId(RestaurantId val) {
+            restaurantId = val;
+            return this;
+        }
+
+        public Builder orderId(OrderId val) {
+            orderId = val;
+            return this;
+        }
+
+        public Builder approvalStatus(OrderApprovalStatus val) {
+            approvalStatus = val;
             return this;
         }
 
