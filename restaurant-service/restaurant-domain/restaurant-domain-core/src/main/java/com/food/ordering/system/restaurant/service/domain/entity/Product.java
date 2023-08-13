@@ -31,6 +31,10 @@ public class Product extends BaseEntity<ProductId> {
         available = builder.available;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public String getName() {
         return name;
     }
@@ -50,11 +54,14 @@ public class Product extends BaseEntity<ProductId> {
 
     public static final class Builder {
         private ProductId productId;
-        private final String name;
-        private final Money price;
+        private  String name;
+        private  Money price;
         private int quantity;
         private boolean available;
 
+        public Builder() {
+
+        }
         public Builder(String name, Money price) {
             this.name = name;
             this.price = price;
