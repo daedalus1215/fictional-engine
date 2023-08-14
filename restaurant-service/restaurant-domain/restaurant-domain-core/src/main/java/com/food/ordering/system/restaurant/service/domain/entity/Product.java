@@ -82,6 +82,19 @@ public class Product extends BaseEntity<ProductId> {
             return this;
         }
 
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+
+        public Builder price(Money val) {
+            price = val;
+            return this;
+        }
+
+
+
         public Product build() {
             return new Product(this);
         }

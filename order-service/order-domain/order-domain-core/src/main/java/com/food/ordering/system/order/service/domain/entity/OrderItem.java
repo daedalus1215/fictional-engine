@@ -4,6 +4,7 @@ import com.food.ordering.system.domain.entity.BaseEntity;
 import com.food.ordering.system.domain.valueobject.Money;
 import com.food.ordering.system.domain.valueobject.OrderId;
 import com.food.ordering.system.order.service.domain.valueobject.OrderItemId;
+import com.food.ordering.system.restaurant.service.domain.entity.Product;
 
 public class OrderItem extends BaseEntity<OrderItemId> {
     private OrderItemId orderItemId;
