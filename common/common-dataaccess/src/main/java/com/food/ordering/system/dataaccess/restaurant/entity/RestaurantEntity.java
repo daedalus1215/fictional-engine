@@ -1,10 +1,11 @@
-package com.food.ordering.system.order.service.dataaccess.restaurant.entity;
+package com.food.ordering.system.dataaccess.restaurant.entity;
 
+import com.food.ordering.system.domain.entity.BaseEntity;
+import com.food.ordering.system.domain.valueobject.RestaurantId;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -15,20 +16,17 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order_restaurant_m_view", schema = "restaurant")
-@IdClass(RestaurantEntityId.class)
 @Entity
-public class RestaurantEntity {
-
+@Table(name = "order_restaurant_m_view", schema = "restaurant")
+public class RestaurantEntity extends BaseEntity<RestaurantId> {
     @Id
     private UUID restaurantId;
-    @Id
     private UUID productId;
-
     private String restaurantName;
     private Boolean restaurantActive;
     private String productName;
     private BigDecimal productPrice;
+    private Boolean productAvailable;
 
     @Override
     public boolean equals(Object o) {
