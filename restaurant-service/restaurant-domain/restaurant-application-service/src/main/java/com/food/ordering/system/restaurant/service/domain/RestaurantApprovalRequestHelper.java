@@ -59,7 +59,7 @@ public class RestaurantApprovalRequestHelper {
 
     private Restaurant findRestaurant(RestaurantApprovalRequest request) {
         final Restaurant restaurant = restaurantDataMapper.restaurantApprovalRequestToRestaurant(request);
-        Optional<Restaurant> restaurantInformation = restaurantRepository.findRestaurantInformation(restaurant);
+        final Optional<Restaurant> restaurantInformation = restaurantRepository.findRestaurantInformation(restaurant);
         if (restaurantInformation.isEmpty()) {
             log.error("Restaurant with id "
                     + restaurant.getId().getValue()
