@@ -1,35 +1,30 @@
 package com.food.ordering.system.order.service.domain.mapper;
 
-import com.food.ordering.system.domain.valueobject.CustomerId;
-import com.food.ordering.system.domain.valueobject.Money;
-import com.food.ordering.system.domain.valueobject.ProductId;
-import com.food.ordering.system.domain.valueobject.RestaurantId;
+import com.food.ordering.system.domain.valueobject.*;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.system.order.service.domain.dto.create.OrderAddress;
 import com.food.ordering.system.order.service.domain.dto.track.TrackOrderResponse;
 import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.entity.OrderItem;
+import com.food.ordering.system.order.service.domain.entity.Product;
 import com.food.ordering.system.order.service.domain.entity.Restaurant;
 import com.food.ordering.system.order.service.domain.valueobject.StreetAddress;
-import com.food.ordering.system.restaurant.service.domain.entity.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderDataMapper {
+
     public Restaurant createOrderCommandToRestaurant(CreateOrderCommand createOrderCommand) {
         return Restaurant.builder()
                 .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
-                .products(createOrderCommand.getItems().stream()
-                        .map(orderItem -> Product.builder()
-                                .id(new ProductId(orderItem.getProductId()))
-                                .build())
-                        .collect(toList()))
+                .products(createOrderCommand.getItems().stream().map(orderItem ->
+                                new Product(new ProductId(orderItem.getProductId())))
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -43,31 +38,10 @@ public class OrderDataMapper {
                 .build();
     }
 
-    private List<OrderItem> orderItemsToOrderItemEntities(List<com.food.ordering.system.order.service.domain.dto.create.OrderItem> items) {
-        return items.stream()
-                .map(orderItem -> OrderItem.builder()
-                        .product(Product.builder()
-                                .id(new ProductId(orderItem.getProductId()))
-                                .build())
-                        .price(new Money(orderItem.getPrice()))
-                        .quantity(orderItem.getQuantity())
-                        .subTotal(new Money(orderItem.getSubTotal()))
-                        .build())
-                .collect(toList());
-    }
-
-    private StreetAddress orderAddressToStreetAddress(OrderAddress address) {
-        return new StreetAddress(
-                UUID.randomUUID(),
-                address.getStreet(),
-                address.getPostalCode(),
-                address.getCity());
-    }
-
-    public CreateOrderResponse orderToCreateOrderResponse(Order orderResult, String message) {
+    public CreateOrderResponse orderToCreateOrderResponse(Order order, String message) {
         return CreateOrderResponse.builder()
-                .orderTrackingId(UUID.randomUUID())
-                .orderStatus(orderResult.getOrderStatus())
+                .orderTrackingId(order.getTrackingId().getValue())
+                .orderStatus(order.getOrderStatus())
                 .message(message)
                 .build();
     }
@@ -78,5 +52,26 @@ public class OrderDataMapper {
                 .orderStatus(order.getOrderStatus())
                 .failureMessages(order.getFailureMessages())
                 .build();
+    }
+
+    private List<OrderItem> orderItemsToOrderItemEntities(
+            List<com.food.ordering.system.order.service.domain.dto.create.OrderItem> orderItems) {
+        return orderItems.stream()
+                .map(orderItem ->
+                        OrderItem.builder()
+                                .product(new Product(new ProductId(orderItem.getProductId())))
+                                .price(new Money(orderItem.getPrice()))
+                                .quantity(orderItem.getQuantity())
+                                .subTotal(new Money(orderItem.getSubTotal()))
+                                .build()).collect(Collectors.toList());
+    }
+
+    private StreetAddress orderAddressToStreetAddress(OrderAddress orderAddress) {
+        return new StreetAddress(
+                UUID.randomUUID(),
+                orderAddress.getStreet(),
+                orderAddress.getPostalCode(),
+                orderAddress.getCity()
+        );
     }
 }

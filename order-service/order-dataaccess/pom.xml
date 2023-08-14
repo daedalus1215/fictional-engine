@@ -29,5 +29,9 @@
             <artifactId>common-dataaccess</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>restaurant-dataaccess</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -4,19 +4,23 @@ import com.food.ordering.system.domain.entity.BaseEntity;
 import com.food.ordering.system.domain.valueobject.Money;
 import com.food.ordering.system.domain.valueobject.OrderId;
 import com.food.ordering.system.order.service.domain.valueobject.OrderItemId;
-import com.food.ordering.system.restaurant.service.domain.entity.Product;
 
 public class OrderItem extends BaseEntity<OrderItemId> {
-    private OrderItemId orderItemId;
+    private OrderId orderId;
     private final Product product;
     private final int quantity;
-
     private final Money price;
-
     private final Money subTotal;
 
-    public static Builder builder() {
-        return new Builder();
+    void initializeOrderItem(OrderId orderId, OrderItemId orderItemId) {
+        this.orderId = orderId;
+        super.setId(orderItemId);
+    }
+
+    boolean isPriceValid() {
+        return price.isGreaterThanZero() &&
+                price.equals(product.getPrice()) &&
+                price.multiply(quantity).equals(subTotal);
     }
 
     private OrderItem(Builder builder) {
@@ -27,14 +31,13 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         subTotal = builder.subTotal;
     }
 
-    boolean isPriceValid() {
-        return price.isGreaterThanZero() &&
-                price.equals(product.getPrice()) &&
-                price.multiply(quantity).equals(subTotal);
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public OrderItemId getOrderItemId() {
-        return orderItemId;
+
+    public OrderId getOrderId() {
+        return orderId;
     }
 
     public Product getProduct() {
@@ -53,12 +56,6 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         return subTotal;
     }
 
-    void initializeOrderItem(OrderId orderId, OrderItemId orderItemId) {
-        this.orderItemId = this.orderItemId;
-        super.setId(orderItemId);
-
-    }
-
     public static final class Builder {
         private OrderItemId orderItemId;
         private Product product;
@@ -66,48 +63,36 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         private Money price;
         private Money subTotal;
 
-        public Builder() {
+        private Builder() {
         }
 
-        public Builder(Product product, int quantity, Money price, Money subTotal) {
-            this.product = product;
-            this.quantity = quantity;
-            this.price = price;
-            this.subTotal = subTotal;
-        }
-
-        public Builder product(Product product) {
-            this.product = product;
+        public Builder orderItemId(OrderItemId val) {
+            orderItemId = val;
             return this;
         }
 
-        public Builder id(OrderItemId val) {
-            orderItemId = val;
+        public Builder product(Product val) {
+            product = val;
+            return this;
+        }
+
+        public Builder quantity(int val) {
+            quantity = val;
+            return this;
+        }
+
+        public Builder price(Money val) {
+            price = val;
+            return this;
+        }
+
+        public Builder subTotal(Money val) {
+            subTotal = val;
             return this;
         }
 
         public OrderItem build() {
             return new OrderItem(this);
-        }
-
-        public Builder price(Money price) {
-            this.price = price;
-            return this;
-        }
-
-        public Builder quantity(Integer quantity) {
-            this.quantity = quantity;
-            return this;
-        }
-
-        public Builder subTotal(Money subTotal) {
-            this.subTotal = subTotal;
-            return this;
-        }
-
-        public Builder orderItemId(OrderItemId orderItemId) {
-            this.orderItemId = orderItemId;
-            return this;
         }
     }
 }

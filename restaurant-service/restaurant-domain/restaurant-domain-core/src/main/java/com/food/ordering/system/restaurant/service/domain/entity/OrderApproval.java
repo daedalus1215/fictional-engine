@@ -26,6 +26,18 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
         approvalStatus = builder.approvalStatus;
     }
 
+    public RestaurantId getRestaurantId() {
+        return restaurantId;
+    }
+
+    public OrderId getOrderId() {
+        return orderId;
+    }
+
+    public OrderApprovalStatus getApprovalStatus() {
+        return approvalStatus;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
