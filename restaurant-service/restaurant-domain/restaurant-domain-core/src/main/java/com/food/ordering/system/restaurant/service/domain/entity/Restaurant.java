@@ -32,7 +32,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
 
         if (!totalAmount.equals(orderDetail.getTotalAmount())) {
             failureMessages.add("Price total is not correct for order: "
-            + orderDetail.getId());
+                    + orderDetail.getId());
         }
     }
 
@@ -72,6 +72,10 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
         return active;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public OrderDetail getOrderDetail() {
         return orderDetail;
     }
@@ -102,6 +106,11 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
 
         public Builder active(boolean val) {
             active = val;
+            return this;
+        }
+
+        public Builder orderDetail(OrderDetail val) {
+            orderDetail = val;
             return this;
         }
 

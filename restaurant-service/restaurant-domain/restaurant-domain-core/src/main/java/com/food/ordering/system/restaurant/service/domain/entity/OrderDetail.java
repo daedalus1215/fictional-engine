@@ -69,6 +69,11 @@ public class OrderDetail extends BaseEntity<OrderId> {
             return this;
         }
 
+        public Builder products(List<Product> products) {
+            this.products = products;
+            return this;
+        }
+
         public OrderDetail build() {
             return new OrderDetail(this);
         }
