@@ -20,6 +20,16 @@ public class Payment extends AggregateRoot<PaymentId> {
     private PaymentStatus paymentStatus;
     private ZonedDateTime createdAt;
 
+    private Payment(Builder builder) {
+        super();
+        this.setId(builder.id);
+        orderId = builder.orderId;
+        customerId = builder.customerId;
+        price = builder.price;
+        paymentStatus = builder.paymentStatus;
+        createdAt = builder.createdAt;
+    }
+
     public void initializePayment() {
         setId(new PaymentId(UUID.randomUUID()));
         createdAt = ZonedDateTime.now(ZoneId.of("UTC"));
@@ -33,16 +43,6 @@ public class Payment extends AggregateRoot<PaymentId> {
 
     public void updateStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
-    }
-
-    private Payment(Builder builder) {
-        super();
-        this.setId(builder.id);
-        orderId = builder.orderId;
-        customerId = builder.customerId;
-        price = builder.price;
-        paymentStatus = builder.paymentStatus;
-        createdAt = builder.createdAt;
     }
 
     public OrderId getOrderId() {
@@ -66,10 +66,10 @@ public class Payment extends AggregateRoot<PaymentId> {
     }
 
     public static final class Builder {
-        private PaymentId id;
         private final OrderId orderId;
         private final CustomerId customerId;
         private final Money price;
+        private PaymentId id;
         private PaymentStatus paymentStatus;
         private ZonedDateTime createdAt;
 

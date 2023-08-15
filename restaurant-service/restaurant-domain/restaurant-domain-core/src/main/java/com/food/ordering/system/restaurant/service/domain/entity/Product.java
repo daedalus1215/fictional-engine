@@ -5,21 +5,15 @@ import com.food.ordering.system.domain.valueobject.Money;
 import com.food.ordering.system.domain.valueobject.ProductId;
 
 public class Product extends BaseEntity<ProductId> {
+    private final int quantity;
     private String name;
     private Money price;
-    private final int quantity;
     private boolean available;
 
     public Product(String name, Money price, int quantity, boolean available) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.available = available;
-    }
-
-    public void updateWithConfirmedNamePriceAndAvailability(String name, Money price, boolean available) {
-        this.name = name;
-        this.price = price;
         this.available = available;
     }
 
@@ -33,6 +27,12 @@ public class Product extends BaseEntity<ProductId> {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public void updateWithConfirmedNamePriceAndAvailability(String name, Money price, boolean available) {
+        this.name = name;
+        this.price = price;
+        this.available = available;
     }
 
     public String getName() {
@@ -54,14 +54,15 @@ public class Product extends BaseEntity<ProductId> {
 
     public static final class Builder {
         private ProductId productId;
-        private  String name;
-        private  Money price;
+        private String name;
+        private Money price;
         private int quantity;
         private boolean available;
 
         public Builder() {
 
         }
+
         public Builder(String name, Money price) {
             this.name = name;
             this.price = price;
@@ -92,7 +93,6 @@ public class Product extends BaseEntity<ProductId> {
             price = val;
             return this;
         }
-
 
 
         public Product build() {

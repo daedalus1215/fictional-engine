@@ -26,6 +26,10 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
         approvalStatus = builder.approvalStatus;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public RestaurantId getRestaurantId() {
         return restaurantId;
     }
@@ -37,11 +41,6 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
     public OrderApprovalStatus getApprovalStatus() {
         return approvalStatus;
     }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
 
     @Override
     public boolean equals(Object o) {
