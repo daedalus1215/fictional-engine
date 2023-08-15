@@ -67,7 +67,7 @@ public class Product extends BaseEntity<ProductId> {
             this.price = price;
         }
 
-        public Builder id(ProductId val) {
+        public Builder productId(ProductId val) {
             productId = val;
             return this;
         }

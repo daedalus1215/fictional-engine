@@ -18,11 +18,11 @@ import static java.util.stream.Collectors.toList;
 public class RestaurantDataMapper {
     public Restaurant restaurantApprovalRequestToRestaurant(RestaurantApprovalRequest request) {
         return Restaurant.builder()
-                .id(new RestaurantId(UUID.fromString(request.getRestaurantId())))
+                .restaurantId(new RestaurantId(UUID.fromString(request.getRestaurantId())))
                 .orderDetail(OrderDetail.builder()
                         .orderId(new OrderId(UUID.fromString(request.getOrderId())))
                         .products(request.getProducts().stream().map(product -> Product.builder()
-                                        .id(product.getId())
+                                        .productId(product.getId())
                                         .quantity(product.getQuantity())
                                         .build())
                                 .collect(toList()))
