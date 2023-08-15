@@ -1,20 +1,25 @@
 package com.food.ordering.system.order.service.domain;
 
-import com.food.ordering.system.domain.valueobject.*;
+import com.food.ordering.system.domain.valueobject.CustomerId;
+import com.food.ordering.system.domain.valueobject.Money;
+import com.food.ordering.system.domain.valueobject.OrderId;
+import com.food.ordering.system.domain.valueobject.OrderStatus;
+import com.food.ordering.system.domain.valueobject.ProductId;
+import com.food.ordering.system.domain.valueobject.RestaurantId;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
-import com.food.ordering.system.order.service.domain.entity.Order;
-import com.food.ordering.system.order.service.domain.entity.Product;
-import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
-import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
-import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
-import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.system.order.service.domain.dto.create.OrderAddress;
 import com.food.ordering.system.order.service.domain.dto.create.OrderItem;
 import com.food.ordering.system.order.service.domain.entity.Customer;
+import com.food.ordering.system.order.service.domain.entity.Order;
+import com.food.ordering.system.order.service.domain.entity.Product;
 import com.food.ordering.system.order.service.domain.entity.Restaurant;
+import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.mapper.OrderDataMapper;
 import com.food.ordering.system.order.service.domain.ports.input.service.OrderApplicationService;
+import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
+import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
+import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,7 +31,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -34,12 +41,15 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = OrderTestConfiguration.class)
 public class OrderApplicationServiceTest {
 
+    private final UUID CUSTOMER_ID = UUID.fromString("ec573e18-1fa9-49c4-8b34-61962436a836");
+    private final UUID RESTAURANT_ID = UUID.fromString("096662f2-a1d5-4d5b-b821-e5158b43fed7");
+    private final UUID PRODUCT_ID = UUID.fromString("0e471038-76d5-44b6-8434-a7d01dbf9781");
+    private final UUID ORDER_ID = UUID.fromString("1460aefa-f965-4880-8972-9fb62564319e");
+    private final BigDecimal PRICE = new BigDecimal("200.00");
     @Autowired
     private OrderApplicationService orderApplicationService;
-
     @Autowired
     private OrderDataMapper orderDataMapper;
-
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -49,11 +59,6 @@ public class OrderApplicationServiceTest {
     private CreateOrderCommand createOrderCommand;
     private CreateOrderCommand createOrderCommandWrongPrice;
     private CreateOrderCommand createOrderCommandWrongProductPrice;
-    private final UUID CUSTOMER_ID = UUID.fromString("ec573e18-1fa9-49c4-8b34-61962436a836");
-    private final UUID RESTAURANT_ID = UUID.fromString("096662f2-a1d5-4d5b-b821-e5158b43fed7");
-    private final UUID PRODUCT_ID = UUID.fromString("0e471038-76d5-44b6-8434-a7d01dbf9781");
-    private final UUID ORDER_ID = UUID.fromString("1460aefa-f965-4880-8972-9fb62564319e");
-    private final BigDecimal PRICE = new BigDecimal("200.00");
 
     @BeforeAll
     private void init() {
@@ -125,8 +130,8 @@ public class OrderApplicationServiceTest {
         Restaurant restaurantResponse = Restaurant.builder()
                 .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
                 .products(List.of(
-                        new Product(new ProductId(PRODUCT_ID), "product-1", new Money(new BigDecimal("50.00"))),
-                        new Product(new ProductId(PRODUCT_ID), "product-2", new Money(new BigDecimal("50.00")))
+                        new Product(new ProductId(PRODUCT_ID), "product-1", new Money(new BigDecimal("50.00")), productAvailable),
+                        new Product(new ProductId(PRODUCT_ID), "product-2", new Money(new BigDecimal("50.00")), productAvailable)
                 ))
                 .active(true)
                 .build();
@@ -167,8 +172,8 @@ public class OrderApplicationServiceTest {
         Restaurant restaurantResponse = Restaurant.builder()
                 .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
                 .products(List.of(
-                        new Product(new ProductId(PRODUCT_ID), "product-1", new Money(new BigDecimal("50.00"))),
-                        new Product(new ProductId(PRODUCT_ID), "product-2", new Money(new BigDecimal("50.00")))
+                        new Product(new ProductId(PRODUCT_ID), "product-1", new Money(new BigDecimal("50.00")), productAvailable),
+                        new Product(new ProductId(PRODUCT_ID), "product-2", new Money(new BigDecimal("50.00")), productAvailable)
                 ))
                 .active(false)
                 .build();

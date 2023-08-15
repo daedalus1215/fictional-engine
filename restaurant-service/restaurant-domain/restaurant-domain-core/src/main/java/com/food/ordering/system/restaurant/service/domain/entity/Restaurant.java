@@ -15,6 +15,23 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
     private boolean active;
     private OrderDetail orderDetail;
 
+    public Restaurant(OrderApproval orderApproval, boolean active, OrderDetail orderDetail) {
+        this.orderApproval = orderApproval;
+        this.active = active;
+        this.orderDetail = orderDetail;
+    }
+
+    private Restaurant(Builder builder) {
+        setId(builder.restaurantId);
+        orderApproval = builder.orderApproval;
+        active = builder.active;
+        orderDetail = builder.orderDetail;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public void validateOrder(List<String> failureMessages) {
         if (orderDetail.getOrderStatus() != OrderStatus.PAID) {
             failureMessages.add("Payment is not completed for order: "
@@ -44,25 +61,6 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
                 .approvalStatus(orderApprovalStatus)
                 .build();
     }
-
-
-    public Restaurant(OrderApproval orderApproval, boolean active, OrderDetail orderDetail) {
-        this.orderApproval = orderApproval;
-        this.active = active;
-        this.orderDetail = orderDetail;
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    private Restaurant(Builder builder) {
-        setId(builder.restaurantId);
-        orderApproval = builder.orderApproval;
-        active = builder.active;
-        orderDetail = builder.orderDetail;
-    }
-
 
     public OrderApproval getOrderApproval() {
         return orderApproval;
@@ -94,7 +92,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
 
         }
 
-        public Builder id(RestaurantId val) {
+        public Builder restaurantId(RestaurantId val) {
             restaurantId = val;
             return this;
         }

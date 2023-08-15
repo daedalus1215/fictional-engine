@@ -59,7 +59,11 @@
       "type": {
         "type": "enum",
         "name": "PaymentStatus",
-        "symbols": ["PENDING", "CANCELLED", "FAILED"]
+        "symbols": [
+          "PENDING",
+          "CANCELLED",
+          "FAILED"
+        ]
       }
     },
     {

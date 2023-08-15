@@ -1,15 +1,19 @@
 package com.food.ordering.system.order.service.dataaccess.order.mapper;
 
-import com.food.ordering.system.domain.valueobject.*;
+import com.food.ordering.system.domain.valueobject.CustomerId;
+import com.food.ordering.system.domain.valueobject.Money;
+import com.food.ordering.system.domain.valueobject.OrderId;
+import com.food.ordering.system.domain.valueobject.ProductId;
+import com.food.ordering.system.domain.valueobject.RestaurantId;
+import com.food.ordering.system.order.service.dataaccess.order.entity.OrderAddressEntity;
+import com.food.ordering.system.order.service.dataaccess.order.entity.OrderEntity;
+import com.food.ordering.system.order.service.dataaccess.order.entity.OrderItemEntity;
 import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.entity.OrderItem;
 import com.food.ordering.system.order.service.domain.entity.Product;
 import com.food.ordering.system.order.service.domain.valueobject.OrderItemId;
 import com.food.ordering.system.order.service.domain.valueobject.StreetAddress;
 import com.food.ordering.system.order.service.domain.valueobject.TrackingId;
-import com.food.ordering.system.order.service.dataaccess.order.entity.OrderAddressEntity;
-import com.food.ordering.system.order.service.dataaccess.order.entity.OrderEntity;
-import com.food.ordering.system.order.service.dataaccess.order.entity.OrderItemEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 public class OrderDataAccessMapper {
+
     public OrderEntity orderToOrderEntity(Order order) {
         OrderEntity orderEntity = OrderEntity.builder()
                 .id(order.getId().getValue())
@@ -51,7 +56,8 @@ public class OrderDataAccessMapper {
                 .trackingId(new TrackingId(orderEntity.getTrackingId()))
                 .orderStatus(orderEntity.getOrderStatus())
                 .failureMessages(orderEntity.getFailureMessages().isEmpty() ? new ArrayList<>() :
-                        new ArrayList<>(Arrays.asList(orderEntity.getFailureMessages().split(FAILURE_MESSAGE_DELIMITER))))
+                        new ArrayList<>(Arrays.asList(orderEntity.getFailureMessages()
+                                .split(FAILURE_MESSAGE_DELIMITER))))
                 .build();
     }
 
@@ -70,9 +76,8 @@ public class OrderDataAccessMapper {
     private StreetAddress addressEntityToDeliveryAddress(OrderAddressEntity address) {
         return new StreetAddress(address.getId(),
                 address.getStreet(),
-                address.getPostCode(),
-                address.getCity()
-        );
+                address.getPostalCode(),
+                address.getCity());
     }
 
     private List<OrderItemEntity> orderItemsToOrderItemEntities(List<OrderItem> items) {
@@ -85,14 +90,13 @@ public class OrderDataAccessMapper {
                         .subTotal(orderItem.getSubTotal().getAmount())
                         .build())
                 .collect(toList());
-
     }
 
     private OrderAddressEntity deliveryAddressToAddressEntity(StreetAddress deliveryAddress) {
         return OrderAddressEntity.builder()
                 .id(deliveryAddress.getId())
                 .street(deliveryAddress.getStreet())
-                .postCode(deliveryAddress.getPostalCode())
+                .postalCode(deliveryAddress.getPostalCode())
                 .city(deliveryAddress.getCity())
                 .build();
     }

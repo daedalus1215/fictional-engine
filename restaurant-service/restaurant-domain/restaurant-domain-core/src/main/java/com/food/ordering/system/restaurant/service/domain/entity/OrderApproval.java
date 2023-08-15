@@ -30,6 +30,17 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
         return new Builder();
     }
 
+    public RestaurantId getRestaurantId() {
+        return restaurantId;
+    }
+
+    public OrderId getOrderId() {
+        return orderId;
+    }
+
+    public OrderApprovalStatus getApprovalStatus() {
+        return approvalStatus;
+    }
 
     @Override
     public boolean equals(Object o) {
