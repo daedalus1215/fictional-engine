@@ -5,16 +5,21 @@
  */
 package com.food.ordering.system.application.kafka.order.avro.model;
 
-@org.apache.avro.specific.AvroGenerated
-public enum RestaurantOrderStatus implements org.apache.avro.generic.GenericEnumSymbol<RestaurantOrderStatus> {
-    PAID;
-    public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"RestaurantOrderStatus\",\"namespace\":\"com.food.ordering.system.kafka.order.avro.model\",\"symbols\":[\"PAID\"]}");
+import org.apache.avro.Schema;
+import org.apache.avro.Schema.Parser;
+import org.apache.avro.generic.GenericEnumSymbol;
+import org.apache.avro.specific.AvroGenerated;
 
-    public static org.apache.avro.Schema getClassSchema() {
+@AvroGenerated
+public enum RestaurantOrderStatus implements GenericEnumSymbol<RestaurantOrderStatus> {
+    PAID;
+    public static final Schema SCHEMA$ = new Parser().parse("{\"type\":\"enum\",\"name\":\"RestaurantOrderStatus\",\"namespace\":\"com.food.ordering.system.kafka.order.avro.model\",\"symbols\":[\"PAID\"]}");
+
+    public static Schema getClassSchema() {
         return SCHEMA$;
     }
 
-    public org.apache.avro.Schema getSchema() {
+    public Schema getSchema() {
         return SCHEMA$;
     }
 }
