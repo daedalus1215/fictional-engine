@@ -11,7 +11,6 @@
         <module name="kafka-model" />
         <module name="kafka-consumer" />
         <module name="payment-messaging" />
-        <module name="restaurant-domain" />
         <module name="order-dataaccess" />
         <module name="restaurant-container" />
         <module name="order-messaging" />
