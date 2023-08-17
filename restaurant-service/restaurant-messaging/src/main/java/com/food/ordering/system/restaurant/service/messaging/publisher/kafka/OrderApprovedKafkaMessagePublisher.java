@@ -5,7 +5,6 @@ import com.food.ordering.system.kafka.producer.KafkaMessageHelper;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
 import com.food.ordering.system.restaurant.service.domain.config.RestaurantServiceConfigData;
 import com.food.ordering.system.restaurant.service.domain.event.OrderApprovalEvent;
-import com.food.ordering.system.restaurant.service.domain.event.OrderApprovedEvent;
 import com.food.ordering.system.restaurant.service.domain.ports.output.message.publisher.OrderApprovedMessagePublisher;
 import com.food.ordering.system.restaurant.service.messaging.mapper.RestaurantMessagingDataMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +31,12 @@ public class OrderApprovedKafkaMessagePublisher implements OrderApprovedMessageP
 
     @Override
     public void publish(OrderApprovalEvent orderApprovedEvent) {
-        String orderId = orderApprovedEvent.getOrderApproval().getOrderId().getValue().toString();
+        final String orderId = orderApprovedEvent.getOrderApproval().getOrderId().getValue().toString();
 
         log.info("Received OrderApprovedEvent for order id: {}", orderId);
 
         try {
-            RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel =
+            final RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel =
                     restaurantMessagingDataMapper
                             .orderApprovedEventToRestaurantApprovalResponseAvroModel(orderApprovedEvent);
 
