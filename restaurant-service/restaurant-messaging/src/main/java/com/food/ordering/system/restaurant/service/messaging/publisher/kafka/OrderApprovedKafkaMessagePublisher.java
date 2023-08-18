@@ -51,8 +51,8 @@ public class OrderApprovedKafkaMessagePublisher implements OrderApprovedMessageP
 
             log.info("RestaurantApprovalResponseAvroModel sent to kafka at: {}", System.nanoTime());
         } catch (Exception e) {
-            log.error("Error while sending RestaurantApprovalResponseAvroModel message" +
-                    " to kafka with order id: {}, error: {}", orderId, e.getMessage());
+            log.error("Error while sending RestaurantApprovalResponseAvroModel message"
+                    + " to kafka with order id: {}, error: {}", orderId, e.getMessage());
         }
     }
 }
