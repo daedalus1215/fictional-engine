@@ -1,7 +1,7 @@
-package com.food.order.ordering.system.order.service.service.messaging.listener.kafka;
+package com.food.order.ordering.system.order.service.messaging.listener.kafka;
 
 
-import com.food.order.ordering.system.order.service.service.messaging.mapper.OrderMessagingDataMapper;
+import com.food.order.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import com.food.ordering.system.application.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
