@@ -20,14 +20,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.food.ordering.system</groupId>
-            <artifactId>common-domain</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

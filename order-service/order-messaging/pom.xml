@@ -32,4 +32,5 @@
             <artifactId>kafka-model</artifactId>
         </dependency>
     </dependencies>
+
 </project>

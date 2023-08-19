@@ -5,6 +5,7 @@
 /Users/laurenceadams/programming/food-ordering-system/order-service/order-domain/order-domain-core/src/main/java/com/food/ordering/system/order/service/domain/entity/Customer.java
 /Users/laurenceadams/programming/food-ordering-system/order-service/order-domain/order-domain-core/src/main/java/com/food/ordering/system/order/service/domain/entity/Order.java
 /Users/laurenceadams/programming/food-ordering-system/order-service/order-domain/order-domain-core/src/main/java/com/food/ordering/system/order/service/domain/event/OrderPaidEvent.java
+/Users/laurenceadams/programming/food-ordering-system/order-service/order-domain/order-domain-core/src/main/java/com/food/ordering/system/order/service/domain/exception/OrderNotFoundException.java
 /Users/laurenceadams/programming/food-ordering-system/order-service/order-domain/order-domain-core/src/main/java/com/food/ordering/system/order/service/domain/entity/Restaurant.java
 /Users/laurenceadams/programming/food-ordering-system/order-service/order-domain/order-domain-core/src/main/java/com/food/ordering/system/order/service/domain/exception/OrderDomainException.java
 /Users/laurenceadams/programming/food-ordering-system/order-service/order-domain/order-domain-core/src/main/java/com/food/ordering/system/order/service/domain/valueobject/TrackingId.java
