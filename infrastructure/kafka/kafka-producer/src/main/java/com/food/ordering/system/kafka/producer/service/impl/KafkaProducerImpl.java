@@ -26,19 +26,17 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
 
     @Override
     public void send(String topicName, K key, V message, ListenableFutureCallback<SendResult<K, V>> callback) {
-        log.info("sending message={} to topic={}", message, topicName);
+        log.info("Sending message={} to topic={}", message, topicName);
         try {
             ListenableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topicName, key, message);
             kafkaResultFuture.addCallback(callback);
         } catch (KafkaException e) {
-            log.error("Error on kafka producer with key: {}, message: {} and exception: {}", key, message, e.getMessage());
+            log.error("Error on kafka producer with key: {}, message: {} and exception: {}", key, message,
+                    e.getMessage());
             throw new KafkaProducerException("Error on kafka producer with key: " + key + " and message: " + message);
         }
     }
 
-    /**
-     * Called when app is shutting down (thank you PreDestroy annotation).
-     */
     @PreDestroy
     public void close() {
         if (kafkaTemplate != null) {

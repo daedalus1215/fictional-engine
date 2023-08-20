@@ -4,7 +4,7 @@ import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRespons
 import com.food.ordering.system.kafka.producer.KafkaMessageHelper;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
 import com.food.ordering.system.restaurant.service.domain.config.RestaurantServiceConfigData;
-import com.food.ordering.system.restaurant.service.domain.event.OrderApprovalEvent;
+import com.food.ordering.system.restaurant.service.domain.event.OrderApprovedEvent;
 import com.food.ordering.system.restaurant.service.domain.ports.output.message.publisher.OrderApprovedMessagePublisher;
 import com.food.ordering.system.restaurant.service.messaging.mapper.RestaurantMessagingDataMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +30,13 @@ public class OrderApprovedKafkaMessagePublisher implements OrderApprovedMessageP
     }
 
     @Override
-    public void publish(OrderApprovalEvent orderApprovedEvent) {
-        final String orderId = orderApprovedEvent.getOrderApproval().getOrderId().getValue().toString();
+    public void publish(OrderApprovedEvent orderApprovedEvent) {
+        String orderId = orderApprovedEvent.getOrderApproval().getOrderId().getValue().toString();
 
         log.info("Received OrderApprovedEvent for order id: {}", orderId);
 
         try {
-            final RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel =
+            RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel =
                     restaurantMessagingDataMapper
                             .orderApprovedEventToRestaurantApprovalResponseAvroModel(orderApprovedEvent);
 
@@ -51,8 +51,9 @@ public class OrderApprovedKafkaMessagePublisher implements OrderApprovedMessageP
 
             log.info("RestaurantApprovalResponseAvroModel sent to kafka at: {}", System.nanoTime());
         } catch (Exception e) {
-            log.error("Error while sending RestaurantApprovalResponseAvroModel message"
-                    + " to kafka with order id: {}, error: {}", orderId, e.getMessage());
+            log.error("Error while sending RestaurantApprovalResponseAvroModel message" +
+                    " to kafka with order id: {}, error: {}", orderId, e.getMessage());
         }
     }
+
 }

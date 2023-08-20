@@ -10,6 +10,7 @@ infrastructure/docker-compose/volumes/*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+*/**/target/*
 
 # Package Files #
 *.jar

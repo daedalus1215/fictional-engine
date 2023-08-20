@@ -13,6 +13,7 @@ import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE
 @Validated
 @Service
 public class PaymentResponseMessageListenerImpl implements PaymentResponseMessageListener {
+
     private final OrderPaymentSaga orderPaymentSaga;
 
     public PaymentResponseMessageListenerImpl(OrderPaymentSaga orderPaymentSaga) {
@@ -21,7 +22,7 @@ public class PaymentResponseMessageListenerImpl implements PaymentResponseMessag
 
     @Override
     public void paymentCompleted(PaymentResponse paymentResponse) {
-        final OrderPaidEvent domainEvent = orderPaymentSaga.process(paymentResponse);
+        OrderPaidEvent domainEvent = orderPaymentSaga.process(paymentResponse);
         log.info("Publishing OrderPaidEvent for order id: {}", paymentResponse.getOrderId());
         domainEvent.fire();
     }
@@ -29,6 +30,8 @@ public class PaymentResponseMessageListenerImpl implements PaymentResponseMessag
     @Override
     public void paymentCancelled(PaymentResponse paymentResponse) {
         orderPaymentSaga.rollback(paymentResponse);
-        log.info("Order is roll backed with failure messages: {}", String.join(FAILURE_MESSAGE_DELIMITER, paymentResponse.getFailureMessages()));
+        log.info("Order is roll backed for order id: {} with failure messages: {}",
+                paymentResponse.getOrderId(),
+                String.join(FAILURE_MESSAGE_DELIMITER, paymentResponse.getFailureMessages()));
     }
 }

@@ -3,19 +3,18 @@ server:
 
 spring:
   jpa:
-    open-in-view: false # Forces the persistence context to not stay open.
-    show-sql: true # shows each SQL in the logs
+    open-in-view: false
+    show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=customer@binaryTransfer=true&reWriteBatchedInserts=true&springtype=unspecified
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=customer&binaryTransfer=true&reWriteBatchedInserts=true
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
     platform: postgres
     schema: classpath:init-schema.sql
+    data: classpath:init-data.sql
     initialization-mode: always
-    data: classpath:init-data
-

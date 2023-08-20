@@ -15,6 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItemEntityId implements Serializable {
+
     private Long id;
     private OrderEntity order;
 

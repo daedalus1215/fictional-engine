@@ -7,18 +7,17 @@ import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequest
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
 import com.food.ordering.system.restaurant.service.domain.dto.RestaurantApprovalRequest;
 import com.food.ordering.system.restaurant.service.domain.entity.Product;
-import com.food.ordering.system.restaurant.service.domain.event.OrderApprovalEvent;
+import com.food.ordering.system.restaurant.service.domain.event.OrderApprovedEvent;
 import com.food.ordering.system.restaurant.service.domain.event.OrderRejectedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 @Component
 public class RestaurantMessagingDataMapper {
     public RestaurantApprovalResponseAvroModel
-    orderApprovedEventToRestaurantApprovalResponseAvroModel(OrderApprovalEvent orderApprovedEvent) {
+    orderApprovedEventToRestaurantApprovalResponseAvroModel(OrderApprovedEvent orderApprovedEvent) {
         return RestaurantApprovalResponseAvroModel.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setSagaId("")
@@ -53,8 +52,8 @@ public class RestaurantMessagingDataMapper {
                 .sagaId(restaurantApprovalRequestAvroModel.getSagaId())
                 .restaurantId(restaurantApprovalRequestAvroModel.getRestaurantId())
                 .orderId(restaurantApprovalRequestAvroModel.getOrderId())
-                .restaurantOrderStatus(RestaurantOrderStatus.valueOf(
-                        restaurantApprovalRequestAvroModel.getRestaurantOrderStatus().name().toString()))
+                .restaurantOrderStatus(RestaurantOrderStatus.valueOf(restaurantApprovalRequestAvroModel
+                        .getRestaurantOrderStatus().name()))
                 .products(restaurantApprovalRequestAvroModel.getProducts()
                         .stream().map(avroModel ->
                                 Product.builder()

@@ -1,9 +1,8 @@
 package com.food.ordering.system.order.service.domain;
 
-import com.food.ordering.system.domain.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.OrderCancelledPaymentRequestMessagePublisher;
 import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.OrderCreatedPaymentRequestMessagePublisher;
-import com.food.ordering.system.order.service.domain.ports.output.message.publisher.restaurantapproval.OrderPaidRestaurantMessagePublisher;
+import com.food.ordering.system.order.service.domain.ports.output.message.publisher.restaurantapproval.OrderPaidRestaurantRequestMessagePublisher;
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
@@ -13,8 +12,9 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages = "com.food.ordering.system")
 public class OrderTestConfiguration {
+
     @Bean
-    public OrderCreatedPaymentRequestMessagePublisher OrderCreatedPaymentRequestMessagePublisher() {
+    public OrderCreatedPaymentRequestMessagePublisher orderCreatedPaymentRequestMessagePublisher() {
         return Mockito.mock(OrderCreatedPaymentRequestMessagePublisher.class);
     }
 
@@ -23,8 +23,9 @@ public class OrderTestConfiguration {
         return Mockito.mock(OrderCancelledPaymentRequestMessagePublisher.class);
     }
 
-    public OrderPaidRestaurantMessagePublisher orderPaidRestaurantMessagePublisher() {
-        return Mockito.mock(OrderPaidRestaurantMessagePublisher.class);
+    @Bean
+    public OrderPaidRestaurantRequestMessagePublisher orderPaidRestaurantRequestMessagePublisher() {
+        return Mockito.mock(OrderPaidRestaurantRequestMessagePublisher.class);
     }
 
     @Bean
@@ -44,6 +45,7 @@ public class OrderTestConfiguration {
 
     @Bean
     public OrderDomainService orderDomainService() {
-        return new OrderDomainServiceImpl(Mockito.mock(DomainEventPublisher.class), Mockito.mock(DomainEventPublisher.class));
+        return new OrderDomainServiceImpl();
     }
+
 }

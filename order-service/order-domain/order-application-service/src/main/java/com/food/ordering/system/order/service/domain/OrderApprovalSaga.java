@@ -20,7 +20,8 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse, E
 
     public OrderApprovalSaga(OrderDomainService orderDomainService,
                              OrderSagaHelper orderSagaHelper,
-                             OrderCancelledPaymentRequestMessagePublisher orderCancelledPaymentRequestMessagePublisher) {
+                             OrderCancelledPaymentRequestMessagePublisher
+                                     orderCancelledPaymentRequestMessagePublisher) {
         this.orderDomainService = orderDomainService;
         this.orderSagaHelper = orderSagaHelper;
         this.orderCancelledPaymentRequestMessagePublisher = orderCancelledPaymentRequestMessagePublisher;

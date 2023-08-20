@@ -16,10 +16,10 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order_customer_m_view", schema = "customer") // gonna use a materialized view
+@Table(name = "order_customer_m_view", schema = "customer")
 @Entity
 public class CustomerEntity {
 
     @Id
     private UUID id;
-};
+}

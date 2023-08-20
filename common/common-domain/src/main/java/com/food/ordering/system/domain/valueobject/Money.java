@@ -6,18 +6,15 @@ import java.util.Objects;
 
 public class Money {
     public static final Money ZERO = new Money(BigDecimal.ZERO);
-
     private final BigDecimal amount;
 
     public Money(BigDecimal amount) {
         this.amount = amount;
     }
 
-
     public boolean isGreaterThanZero() {
         return this.amount != null && this.amount.compareTo(BigDecimal.ZERO) > 0;
     }
-
 
     public boolean isGreaterThan(Money money) {
         return this.amount != null && this.amount.compareTo(money.getAmount()) > 0;
@@ -35,16 +32,6 @@ public class Money {
         return new Money(setScale(this.amount.multiply(new BigDecimal(multiplier))));
     }
 
-    /**
-     * Can have values for 10.75 or 500.80.
-     *
-     * @param input
-     * @return
-     */
-    private BigDecimal setScale(BigDecimal input) {
-        return input.setScale(2, RoundingMode.HALF_EVEN);
-    }
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -60,5 +47,9 @@ public class Money {
     @Override
     public int hashCode() {
         return Objects.hash(amount);
+    }
+
+    private BigDecimal setScale(BigDecimal input) {
+        return input.setScale(2, RoundingMode.HALF_EVEN);
     }
 }

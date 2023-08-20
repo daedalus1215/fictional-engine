@@ -28,7 +28,6 @@ import java.util.UUID;
 @Table(name = "orders")
 @Entity
 public class OrderEntity {
-
     @Id
     private UUID id;
     private UUID customerId;
@@ -38,6 +37,7 @@ public class OrderEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     private String failureMessages;
+
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private OrderAddressEntity address;
 

@@ -19,9 +19,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class OrderDataAccessMapper {
@@ -70,7 +70,7 @@ public class OrderDataAccessMapper {
                         .quantity(orderItemEntity.getQuantity())
                         .subTotal(new Money(orderItemEntity.getSubTotal()))
                         .build())
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     private StreetAddress addressEntityToDeliveryAddress(OrderAddressEntity address) {
@@ -89,7 +89,7 @@ public class OrderDataAccessMapper {
                         .quantity(orderItem.getQuantity())
                         .subTotal(orderItem.getSubTotal().getAmount())
                         .build())
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     private OrderAddressEntity deliveryAddressToAddressEntity(StreetAddress deliveryAddress) {

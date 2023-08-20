@@ -11,15 +11,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class Restaurant extends AggregateRoot<RestaurantId> {
+    private final OrderDetail orderDetail;
     private OrderApproval orderApproval;
     private boolean active;
-    private OrderDetail orderDetail;
-
-    public Restaurant(OrderApproval orderApproval, boolean active, OrderDetail orderDetail) {
-        this.orderApproval = orderApproval;
-        this.active = active;
-        this.orderDetail = orderDetail;
-    }
 
     private Restaurant(Builder builder) {
         setId(builder.restaurantId);
@@ -34,22 +28,18 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
 
     public void validateOrder(List<String> failureMessages) {
         if (orderDetail.getOrderStatus() != OrderStatus.PAID) {
-            failureMessages.add("Payment is not completed for order: "
-                    + orderDetail.getId());
+            failureMessages.add("Payment is not completed for order: " + orderDetail.getId());
         }
-
-        final Money totalAmount = orderDetail.getProducts().stream().map(product -> {
+        Money totalAmount = orderDetail.getProducts().stream().map(product -> {
             if (!product.isAvailable()) {
-                failureMessages.add("Product with id: "
-                        + product.getId().getValue()
-                        + " is not available.");
+                failureMessages.add("Product with id: " + product.getId().getValue()
+                        + " is not available");
             }
             return product.getPrice().multiply(product.getQuantity());
         }).reduce(Money.ZERO, Money::add);
 
         if (!totalAmount.equals(orderDetail.getTotalAmount())) {
-            failureMessages.add("Price total is not correct for order: "
-                    + orderDetail.getId());
+            failureMessages.add("Price total is not correct for order: " + orderDetail.getId());
         }
     }
 
@@ -84,12 +74,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
         private boolean active;
         private OrderDetail orderDetail;
 
-        public Builder(OrderDetail orderDetail) {
-            this.orderDetail = orderDetail;
-        }
-
-        public Builder() {
-
+        private Builder() {
         }
 
         public Builder restaurantId(RestaurantId val) {

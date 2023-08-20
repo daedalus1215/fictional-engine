@@ -2,12 +2,12 @@ DROP SCHEMA IF EXISTS "order" CASCADE;
 
 CREATE SCHEMA "order";
 
--- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 DROP TYPE IF EXISTS order_status;
+CREATE TYPE order_status AS ENUM ('PENDING', 'PAID', 'APPROVED', 'CANCELLED', 'CANCELLING');
 
-CREATE TYPE order_status as enum ('PENDING', 'PAID', 'APPROVED', 'CANCELLED', 'CANCELLING');
-
+DROP TABLE IF EXISTS "order".orders CASCADE;
 
 CREATE TABLE "order".orders
 (
@@ -20,6 +20,8 @@ CREATE TABLE "order".orders
     failure_messages character varying COLLATE pg_catalog."default",
     CONSTRAINT orders_pkey PRIMARY KEY (id)
 );
+
+DROP TABLE IF EXISTS "order".order_items CASCADE;
 
 CREATE TABLE "order".order_items
 (
@@ -50,3 +52,12 @@ CREATE TABLE "order".order_address
     city        character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT order_address_pkey PRIMARY KEY (id, order_id)
 );
+
+ALTER TABLE "order".order_address
+    ADD CONSTRAINT "FK_ORDER_ID" FOREIGN KEY (order_id)
+        REFERENCES "order".orders (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+        NOT VALID;
+
+

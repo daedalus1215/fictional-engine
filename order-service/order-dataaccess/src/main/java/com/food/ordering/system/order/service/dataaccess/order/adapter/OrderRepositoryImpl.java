@@ -12,10 +12,12 @@ import java.util.Optional;
 
 @Component
 public class OrderRepositoryImpl implements OrderRepository {
+
     private final OrderJpaRepository orderJpaRepository;
     private final OrderDataAccessMapper orderDataAccessMapper;
 
-    public OrderRepositoryImpl(OrderJpaRepository orderJpaRepository, OrderDataAccessMapper orderDataAccessMapper) {
+    public OrderRepositoryImpl(OrderJpaRepository orderJpaRepository,
+                               OrderDataAccessMapper orderDataAccessMapper) {
         this.orderJpaRepository = orderJpaRepository;
         this.orderDataAccessMapper = orderDataAccessMapper;
     }
@@ -28,8 +30,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Optional<Order> findById(OrderId orderId) {
-        return orderJpaRepository.findById(orderId.getValue())
-                .map(orderDataAccessMapper::orderEntityToOrder);
+        return orderJpaRepository.findById(orderId.getValue()).map(orderDataAccessMapper::orderEntityToOrder);
     }
 
     @Override

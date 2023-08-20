@@ -1,4 +1,0 @@
-/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-producer/src/main/java/com/food/ordering/system/application/kafka/producer/service/KafkaProducer.java
-/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-producer/src/main/java/com/food/ordering/system/application/kafka/producer/service/impl/KafkaProducerImpl.java
-/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-producer/src/main/java/com/food/ordering/system/application/kafka/producer/exception/KafkaProducerException.java
-/Users/laurenceadams/programming/food-ordering-system/infrastructure/kafka/kafka-producer/src/main/java/com/food/ordering/system/application/kafka/producer/KafkaProducerConfig.java
