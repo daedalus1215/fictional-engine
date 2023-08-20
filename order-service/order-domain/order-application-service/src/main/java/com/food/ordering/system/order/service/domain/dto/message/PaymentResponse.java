@@ -13,12 +13,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class PaymentResponse {
-    private final String id;
-    /**
-     * For the messages between the services
-     */
+    private String id;
     private String sagaId;
-
     private String orderId;
     private String paymentId;
     private String customerId;
@@ -26,5 +22,4 @@ public class PaymentResponse {
     private Instant createdAt;
     private PaymentStatus paymentStatus;
     private List<String> failureMessages;
-
 }

@@ -1,8 +1,8 @@
-DROP SCHEMA IF EXISTS "customer" CASCADE;
+DROP SCHEMA IF EXISTS customer CASCADE;
 
-CREATE SCHEMA "customer";
+CREATE SCHEMA customer;
 
--- CREATE EXTENSION IF NOT EXISTS "customer.uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE customer.customers
 (
@@ -14,6 +14,7 @@ CREATE TABLE customer.customers
 );
 
 DROP MATERIALIZED VIEW IF EXISTS customer.order_customer_m_view;
+
 CREATE MATERIALIZED VIEW customer.order_customer_m_view
     TABLESPACE pg_default
 AS
@@ -38,12 +39,10 @@ AS
     END;
 ' LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS order_customer_m_view ON customer.customers;
+DROP trigger IF EXISTS refresh_order_customer_m_view ON customer.customers;
 
 CREATE trigger refresh_order_customer_m_view
     after INSERT OR UPDATE OR DELETE OR truncate
     ON customer.customers
-    for each statement
+    FOR each statement
 EXECUTE PROCEDURE customer.refresh_order_customer_m_view();
-
-

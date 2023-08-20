@@ -61,18 +61,26 @@ public class Order extends AggregateRoot<OrderId> {
         orderStatus = OrderStatus.PAID;
     }
 
-    public void approved() {
+    public void approve() {
         if (orderStatus != OrderStatus.PAID) {
-            throw new OrderDomainException("Order is not in correct state for approved operation!");
+            throw new OrderDomainException("Order is not in correct state for approve operation!");
         }
         orderStatus = OrderStatus.APPROVED;
     }
 
     public void initCancel(List<String> failureMessages) {
         if (orderStatus != OrderStatus.PAID) {
-            throw new OrderDomainException("Order is not in correct state for cancel operation");
+            throw new OrderDomainException("Order is not in correct state for initCancel operation!");
         }
         orderStatus = OrderStatus.CANCELLING;
+        updateFailureMessages(failureMessages);
+    }
+
+    public void cancel(List<String> failureMessages) {
+        if (!(orderStatus == OrderStatus.CANCELLING || orderStatus == OrderStatus.PENDING)) {
+            throw new OrderDomainException("Order is not in correct state for cancel operation!");
+        }
+        orderStatus = OrderStatus.CANCELLED;
         updateFailureMessages(failureMessages);
     }
 
@@ -85,42 +93,34 @@ public class Order extends AggregateRoot<OrderId> {
         }
     }
 
-    public void cancel(List<String> failureMessages) {
-        if (orderStatus == OrderStatus.CANCELLING || orderStatus == OrderStatus.PENDING) {
-            throw new OrderDomainException("Order is not in correct state for cancel operation!");
-        }
-
-        orderStatus = OrderStatus.CANCELLED;
-        updateFailureMessages(failureMessages);
-    }
-
-    private void validateItemsPrice() {
-        Money orderItemsTotal = items.stream()
-                .map(orderItem -> {
-                    validateItemPrice(orderItem);
-                    return orderItem.getSubTotal();
-                })
-                .reduce(Money.ZERO, Money::add);
-        if (!price.equals(orderItemsTotal)) {
-            throw new OrderDomainException("Total price: " + price.getAmount() + " is not equal to Order items total: " + orderItemsTotal.getAmount() + "!");
-        }
-    }
-
-    private void validateItemPrice(OrderItem orderItem) {
-        if (!orderItem.isPriceValid()) {
-            throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount() + " is not valid for product " + orderItem.getProduct().getId().getValue());
+    private void validateInitialOrder() {
+        if (orderStatus != null || getId() != null) {
+            throw new OrderDomainException("Order is not in correct state for initialization!");
         }
     }
 
     private void validateTotalPrice() {
         if (price == null || !price.isGreaterThanZero()) {
-            throw new OrderDomainException("Total price must be greater than zero");
+            throw new OrderDomainException("Total price must be greater than zero!");
         }
     }
 
-    private void validateInitialOrder() throws OrderDomainException {
-        if (orderStatus != null || getId() != null) {
-            throw new OrderDomainException("Initial Order is not valid, missing order status or id");
+    private void validateItemsPrice() {
+        Money orderItemsTotal = items.stream().map(orderItem -> {
+            validateItemPrice(orderItem);
+            return orderItem.getSubTotal();
+        }).reduce(Money.ZERO, Money::add);
+
+        if (!price.equals(orderItemsTotal)) {
+            throw new OrderDomainException("Total price: " + price.getAmount()
+                    + " is not equal to Order items total: " + orderItemsTotal.getAmount() + "!");
+        }
+    }
+
+    private void validateItemPrice(OrderItem orderItem) {
+        if (!orderItem.isPriceValid()) {
+            throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount() +
+                    " is not valid for product " + orderItem.getProduct().getId().getValue());
         }
     }
 
@@ -129,10 +129,6 @@ public class Order extends AggregateRoot<OrderId> {
         for (OrderItem orderItem : items) {
             orderItem.initializeOrderItem(super.getId(), new OrderItemId(itemId++));
         }
-    }
-
-    public OrderId getOrderId() {
-        return super.getId();
     }
 
     public CustomerId getCustomerId() {
@@ -178,16 +174,36 @@ public class Order extends AggregateRoot<OrderId> {
         private OrderStatus orderStatus;
         private List<String> failureMessages;
 
-        public Builder() {
+        private Builder() {
         }
 
-        public Builder orderId(OrderId orderId) {
-            this.orderId = orderId;
+        public Builder orderId(OrderId val) {
+            orderId = val;
             return this;
         }
 
-        public Builder customerId(CustomerId customerId) {
-            this.customerId = customerId;
+        public Builder customerId(CustomerId val) {
+            customerId = val;
+            return this;
+        }
+
+        public Builder restaurantId(RestaurantId val) {
+            restaurantId = val;
+            return this;
+        }
+
+        public Builder deliveryAddress(StreetAddress val) {
+            deliveryAddress = val;
+            return this;
+        }
+
+        public Builder price(Money val) {
+            price = val;
+            return this;
+        }
+
+        public Builder items(List<OrderItem> val) {
+            items = val;
             return this;
         }
 
@@ -208,26 +224,6 @@ public class Order extends AggregateRoot<OrderId> {
 
         public Order build() {
             return new Order(this);
-        }
-
-        public Builder restaurantId(RestaurantId restaurantId) {
-            this.restaurantId = restaurantId;
-            return this;
-        }
-
-        public Builder deliveryAddress(StreetAddress deliveryAddress) {
-            this.deliveryAddress = deliveryAddress;
-            return this;
-        }
-
-        public Builder price(Money price) {
-            this.price = price;
-            return this;
-        }
-
-        public Builder items(List<OrderItem> items) {
-            this.items = items;
-            return this;
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.food.ordering.system.order.service.dataaccess.customer.adapter;
 
-import com.food.ordering.system.domain.valueobject.CustomerId;
 import com.food.ordering.system.order.service.dataaccess.customer.mapper.CustomerDataAccessMapper;
 import com.food.ordering.system.order.service.dataaccess.customer.repository.CustomerJpaRepository;
 import com.food.ordering.system.order.service.domain.entity.Customer;
@@ -16,13 +15,14 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerDataAccessMapper customerDataAccessMapper;
 
-    public CustomerRepositoryImpl(CustomerJpaRepository customerJpaRepository, CustomerDataAccessMapper customerDataAccessMapper) {
+    public CustomerRepositoryImpl(CustomerJpaRepository customerJpaRepository,
+                                  CustomerDataAccessMapper customerDataAccessMapper) {
         this.customerJpaRepository = customerJpaRepository;
         this.customerDataAccessMapper = customerDataAccessMapper;
     }
 
     @Override
     public Optional<Customer> findCustomer(UUID customerId) {
-        return customerJpaRepository.findById(customerId).map(customerEntity -> new Customer(new CustomerId(customerId)));
+        return customerJpaRepository.findById(customerId).map(customerDataAccessMapper::customerEntityToCustomer);
     }
 }

@@ -16,8 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 @Component
 public class RestaurantDataAccessMapper {
@@ -25,22 +24,22 @@ public class RestaurantDataAccessMapper {
     public List<UUID> restaurantToRestaurantProducts(Restaurant restaurant) {
         return restaurant.getOrderDetail().getProducts().stream()
                 .map(product -> product.getId().getValue())
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     public Restaurant restaurantEntityToRestaurant(List<RestaurantEntity> restaurantEntities) {
-        final RestaurantEntity restaurantEntity =
+        RestaurantEntity restaurantEntity =
                 restaurantEntities.stream().findFirst().orElseThrow(() ->
                         new RestaurantDataAccessException("No restaurants found!"));
 
-        final List<Product> restaurantProducts = restaurantEntities.stream().map(entity ->
+        List<Product> restaurantProducts = restaurantEntities.stream().map(entity ->
                         Product.builder()
                                 .productId(new ProductId(entity.getProductId()))
                                 .name(entity.getProductName())
                                 .price(new Money(entity.getProductPrice()))
                                 .available(entity.getProductAvailable())
                                 .build())
-                .collect(toList());
+                .collect(Collectors.toList());
 
         return Restaurant.builder()
                 .restaurantId(new RestaurantId(restaurantEntity.getRestaurantId()))

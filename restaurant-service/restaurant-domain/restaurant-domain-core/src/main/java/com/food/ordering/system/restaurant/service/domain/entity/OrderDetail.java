@@ -9,14 +9,8 @@ import java.util.List;
 
 public class OrderDetail extends BaseEntity<OrderId> {
     private final List<Product> products;
-    private OrderStatus orderStatus;
-    private Money totalAmount;
-
-    public OrderDetail(OrderStatus orderStatus, Money totalAmount, List<Product> products) {
-        this.orderStatus = orderStatus;
-        this.totalAmount = totalAmount;
-        this.products = products;
-    }
+    private final OrderStatus orderStatus;
+    private final Money totalAmount;
 
     private OrderDetail(Builder builder) {
         setId(builder.orderId);
@@ -47,11 +41,7 @@ public class OrderDetail extends BaseEntity<OrderId> {
         private Money totalAmount;
         private List<Product> products;
 
-        public Builder() {
-        }
-
-        public Builder(List<Product> products) {
-            this.products = products;
+        private Builder() {
         }
 
         public Builder orderId(OrderId val) {
@@ -69,8 +59,8 @@ public class OrderDetail extends BaseEntity<OrderId> {
             return this;
         }
 
-        public Builder products(List<Product> products) {
-            this.products = products;
+        public Builder products(List<Product> val) {
+            products = val;
             return this;
         }
 

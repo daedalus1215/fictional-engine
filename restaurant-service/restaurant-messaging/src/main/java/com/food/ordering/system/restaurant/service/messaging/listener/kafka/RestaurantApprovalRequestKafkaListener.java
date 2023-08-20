@@ -1,6 +1,6 @@
 package com.food.ordering.system.restaurant.service.messaging.listener.kafka;
 
-import com.food.ordering.system.application.kafka.consumer.KafkaConsumer;
+import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel;
 import com.food.ordering.system.restaurant.service.domain.ports.input.message.listener.RestaurantApprovalRequestMessageListener;
 import com.food.ordering.system.restaurant.service.messaging.mapper.RestaurantMessagingDataMapper;
@@ -44,7 +44,7 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
 
         messages.forEach(restaurantApprovalRequestAvroModel -> {
             log.info("Processing order approval for order id: {}", restaurantApprovalRequestAvroModel.getOrderId());
-            restaurantApprovalRequestMessageListener.approvalOrder(restaurantMessagingDataMapper.
+            restaurantApprovalRequestMessageListener.approveOrder(restaurantMessagingDataMapper.
                     restaurantApprovalRequestAvroModelToRestaurantApproval(restaurantApprovalRequestAvroModel));
         });
     }

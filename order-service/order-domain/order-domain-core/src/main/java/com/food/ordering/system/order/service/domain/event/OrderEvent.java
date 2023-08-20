@@ -6,8 +6,8 @@ import com.food.ordering.system.order.service.domain.entity.Order;
 import java.time.ZonedDateTime;
 
 public abstract class OrderEvent implements DomainEvent<Order> {
-    protected final Order order;
-    protected final ZonedDateTime createdAt;
+    private final Order order;
+    private final ZonedDateTime createdAt;
 
     public OrderEvent(Order order, ZonedDateTime createdAt) {
         this.order = order;

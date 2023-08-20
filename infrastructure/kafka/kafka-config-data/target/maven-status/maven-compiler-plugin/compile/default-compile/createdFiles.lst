@@ -1,4 +1,0 @@
-META-INF/spring-configuration-metadata.json
-com/food/ordering/system/kafka/config/KafkaProducerConfigData.class
-com/food/ordering/system/kafka/config/KafkaConfigData.class
-com/food/ordering/system/kafka/config/KafkaConsumerConfigData.class

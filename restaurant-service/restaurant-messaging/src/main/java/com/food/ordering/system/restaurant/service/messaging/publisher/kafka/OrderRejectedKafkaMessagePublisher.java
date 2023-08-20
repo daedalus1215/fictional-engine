@@ -31,12 +31,12 @@ public class OrderRejectedKafkaMessagePublisher implements OrderRejectedMessageP
 
     @Override
     public void publish(OrderRejectedEvent orderRejectedEvent) {
-        final String orderId = orderRejectedEvent.getOrderApproval().getOrderId().getValue().toString();
+        String orderId = orderRejectedEvent.getOrderApproval().getOrderId().getValue().toString();
 
         log.info("Received OrderRejectedEvent for order id: {}", orderId);
 
         try {
-            final RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel =
+            RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel =
                     restaurantMessagingDataMapper
                             .orderRejectedEventToRestaurantApprovalResponseAvroModel(orderRejectedEvent);
 

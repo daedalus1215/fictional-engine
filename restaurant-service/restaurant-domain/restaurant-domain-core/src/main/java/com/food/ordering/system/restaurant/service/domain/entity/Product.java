@@ -10,13 +10,6 @@ public class Product extends BaseEntity<ProductId> {
     private Money price;
     private boolean available;
 
-    public Product(String name, Money price, int quantity, boolean available) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.available = available;
-    }
-
     private Product(Builder builder) {
         setId(builder.productId);
         name = builder.name;
@@ -51,7 +44,6 @@ public class Product extends BaseEntity<ProductId> {
         return available;
     }
 
-
     public static final class Builder {
         private ProductId productId;
         private String name;
@@ -59,17 +51,21 @@ public class Product extends BaseEntity<ProductId> {
         private int quantity;
         private boolean available;
 
-        public Builder() {
-
-        }
-
-        public Builder(String name, Money price) {
-            this.name = name;
-            this.price = price;
+        private Builder() {
         }
 
         public Builder productId(ProductId val) {
             productId = val;
+            return this;
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder price(Money val) {
+            price = val;
             return this;
         }
 
@@ -82,18 +78,6 @@ public class Product extends BaseEntity<ProductId> {
             available = val;
             return this;
         }
-
-        public Builder name(String val) {
-            name = val;
-            return this;
-        }
-
-
-        public Builder price(Money val) {
-            price = val;
-            return this;
-        }
-
 
         public Product build() {
             return new Product(this);
