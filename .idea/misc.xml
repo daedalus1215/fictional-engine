@@ -7,16 +7,17 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/restaurant-service/restaurant-domain/restaurant-application-service/pom.xml" />
         <option value="$PROJECT_DIR$/infrastructure/kafka/pom.xml" />
+        <option value="$PROJECT_DIR$/infrastructure/pom.xml" />
+        <option value="$PROJECT_DIR$/common/pom.xml" />
+        <option value="$PROJECT_DIR$/customer-serv/pom.xml" />
+        <option value="$PROJECT_DIR$/restaurant-service/pom.xml" />
+        <option value="$PROJECT_DIR$/payment-service/pom.xml" />
+        <option value="$PROJECT_DIR$/order-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/common/pom.xml" />
         <option value="$PROJECT_DIR$/customer-service/pom.xml" />
-        <option value="$PROJECT_DIR$/infrastructure/pom.xml" />
-        <option value="$PROJECT_DIR$/order-service/pom.xml" />
-        <option value="$PROJECT_DIR$/payment-service/pom.xml" />
-        <option value="$PROJECT_DIR$/restaurant-service/pom.xml" />
       </set>
     </option>
   </component>
