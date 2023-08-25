@@ -24,6 +24,7 @@
         <module name="saga" />
         <module name="restaurant-application-service" />
         <module name="common-dataaccess" />
+        <module name="customer-service" />
         <module name="order-application-service" />
         <module name="kafka-producer" />
         <module name="kafka-config-data" />
@@ -36,7 +37,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="common" target="18" />
-      <module name="customer-service" target="17" />
       <module name="infrastructure" target="18" />
       <module name="order-service" target="18" />
       <module name="payment-service" target="17" />
