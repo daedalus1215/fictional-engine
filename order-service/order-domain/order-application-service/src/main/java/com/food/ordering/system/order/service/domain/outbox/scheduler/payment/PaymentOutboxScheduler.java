@@ -27,8 +27,6 @@ public class PaymentOutboxScheduler implements OutboxScheduler {
         this.paymentRequestMessagePublisher = paymentRequestMessagePublisher;
     }
 
-
-
     @Override
     @Transactional
     @Scheduled(fixedDelayString = "${order-service.outbox-scheduler-fixed-rate}",

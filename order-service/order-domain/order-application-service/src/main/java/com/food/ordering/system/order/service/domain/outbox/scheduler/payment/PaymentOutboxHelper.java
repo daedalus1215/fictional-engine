@@ -39,7 +39,7 @@ public class PaymentOutboxHelper {
                 sagaStatus);
     }
 
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public Optional<OrderPaymentOutboxMessage> getPaymentOutboxMessageBySagaIdAndSagaStatus(UUID sagaId,
                                                                                             SagaStatus... sagaStatus) {
         return paymentOutboxRepository.findByTypeAndSagaIdAndSagaStatus(ORDER_SAGA_NAME, sagaId, sagaStatus);
@@ -53,7 +53,7 @@ public class PaymentOutboxHelper {
      */
     @Transactional
     public void save(OrderPaymentOutboxMessage orderPaymentOutboxMessage) {
-        OrderPaymentOutboxMessage response = paymentOutboxRepository.save(orderPaymentOutboxMessage);
+        final OrderPaymentOutboxMessage response = paymentOutboxRepository.save(orderPaymentOutboxMessage);
         if (response == null) {
             log.error("Could not save OrderPaymentOutboxMessage with outbox id: {}", orderPaymentOutboxMessage.getId());
             throw new OrderDomainException("Could not save OrderPaymentOutboxMessage with outbox id: " +

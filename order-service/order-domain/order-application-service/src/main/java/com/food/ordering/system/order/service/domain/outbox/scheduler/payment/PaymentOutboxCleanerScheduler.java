@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 @Slf4j
 @Component
@@ -25,7 +26,7 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
     @Override
     @Scheduled(cron = "@midnight")
     public void processOutboxMessage() {
-        Optional<List<OrderPaymentOutboxMessage>> outboxMessagesResponse =
+        final Optional<List<OrderPaymentOutboxMessage>> outboxMessagesResponse =
                 paymentOutboxHelper.getPaymentOutboxMessageByOutboxStatusAndSagaStatus(
                         OutboxStatus.COMPLETED,
                         SagaStatus.SUCCEEDED,
@@ -33,16 +34,20 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
                         SagaStatus.COMPENSATED);
 
         if (outboxMessagesResponse.isPresent()) {
-            List<OrderPaymentOutboxMessage> outboxMessages = outboxMessagesResponse.get();
-            log.info("Received {} OrderPaymentOutboxMessage for clean-up. The payloads: {}",
+            final List<OrderPaymentOutboxMessage> outboxMessages = outboxMessagesResponse.get();
+            log.info(
+                    "Received {} OrderPaymentOutboxMessage for clean-up. The payloads: {}",
                     outboxMessages.size(),
-                    outboxMessages.stream().map(OrderPaymentOutboxMessage::getPayload)
-                            .collect(Collectors.joining("\n")));
+                    outboxMessages.stream()
+                            .map(OrderPaymentOutboxMessage::getPayload)
+                            .collect(joining("\n"))
+            );
             paymentOutboxHelper.deletePaymentOutboxMessageByOutboxStatusAndSagaStatus(
                     OutboxStatus.COMPLETED,
                     SagaStatus.SUCCEEDED,
                     SagaStatus.FAILED,
-                    SagaStatus.COMPENSATED);
+                    SagaStatus.COMPENSATED
+            );
             log.info("{} OrderPaymentOutboxMessage deleted!", outboxMessages.size());
         }
 
