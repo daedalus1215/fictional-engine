@@ -9,11 +9,13 @@ import com.food.ordering.system.outbox.OutboxStatus;
 import com.food.ordering.system.saga.SagaStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
@@ -37,15 +39,18 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
 
     @Override
     public Optional<List<OrderApprovalOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatus(String sagaType,
-                                                                                       OutboxStatus outboxStatus,
-                                                                       SagaStatus... sagaStatus) {
-        return Optional.of(approvalOutboxJpaRepository.findByTypeAndOutboxStatusAndSagaStatusIn(sagaType, outboxStatus,
-                Arrays.asList(sagaStatus))
-                .orElseThrow(() -> new ApprovalOutboxNotFoundException("Approval outbox object " +
-                        "could be found for saga type " + sagaType))
-                .stream()
+                                                                                             OutboxStatus outboxStatus,
+                                                                                             SagaStatus... sagaStatus) {
+        return of(approvalOutboxJpaRepository.findByTypeAndOutboxStatusAndSagaStatusIn(
+                        sagaType,
+                        outboxStatus,
+                        asList(sagaStatus)
+                ).orElseThrow(() -> new ApprovalOutboxNotFoundException("Approval outbox object "
+                        .concat("could be found for saga type ")
+                        .concat(sagaType))
+                ).stream()
                 .map(approvalOutboxDataAccessMapper::approvalOutboxEntityToOrderApprovalOutboxMessage)
-                .collect(Collectors.toList()));
+                .collect(toList()));
     }
 
     @Override
@@ -53,15 +58,13 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
                                                                                  UUID sagaId,
                                                                                  SagaStatus... sagaStatus) {
         return approvalOutboxJpaRepository
-                .findByTypeAndSagaIdAndSagaStatusIn(type, sagaId,
-                        Arrays.asList(sagaStatus))
+                .findByTypeAndSagaIdAndSagaStatusIn(type, sagaId, asList(sagaStatus))
                 .map(approvalOutboxDataAccessMapper::approvalOutboxEntityToOrderApprovalOutboxMessage);
 
     }
 
     @Override
     public void deleteByTypeAndOutboxStatusAndSagaStatus(String type, OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
-        approvalOutboxJpaRepository.deleteByTypeAndOutboxStatusAndSagaStatusIn(type, outboxStatus,
-                Arrays.asList(sagaStatus));
+        approvalOutboxJpaRepository.deleteByTypeAndOutboxStatusAndSagaStatusIn(type, outboxStatus, asList(sagaStatus));
     }
 }
