@@ -23,6 +23,10 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
         this.paymentOutboxHelper = paymentOutboxHelper;
     }
 
+    /**
+     * Clean up everything at midnight.
+     * Could also archive, by saving a copy of the data to an archive table before deleting them.
+     */
     @Override
     @Scheduled(cron = "@midnight")
     public void processOutboxMessage() {
@@ -50,6 +54,5 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
             );
             log.info("{} OrderPaymentOutboxMessage deleted!", outboxMessages.size());
         }
-
     }
 }
