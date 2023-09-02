@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 @Slf4j
 @Component
@@ -32,16 +33,17 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
     @Scheduled(fixedDelayString = "${order-service.outbox-scheduler-fixed-rate}",
             initialDelayString = "${order-service.outbox-scheduler-initial-delay}")
     public void processOutboxMessage() {
-        Optional<List<OrderApprovalOutboxMessage>> outboxMessagesResponse =
+        final Optional<List<OrderApprovalOutboxMessage>> outboxMessagesResponse =
                 approvalOutboxHelper.getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
                         OutboxStatus.STARTED,
                         SagaStatus.PROCESSING);
         if (outboxMessagesResponse.isPresent() && outboxMessagesResponse.get().size() > 0) {
-            List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
+            final List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderApprovalOutboxMessage with ids: {}, sending to message bus!",
                     outboxMessages.size(),
-                    outboxMessages.stream().map(outboxMessage ->
-                            outboxMessage.getId().toString()).collect(Collectors.joining(",")));
+                    outboxMessages.stream()
+                            .map(outboxMessage -> outboxMessage.getId().toString())
+                            .collect(joining(",")));
             outboxMessages.forEach(outboxMessage ->
                     restaurantApprovalRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
             log.info("{} OrderApprovalOutboxMessage sent to message bus!", outboxMessages.size());
