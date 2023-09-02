@@ -48,7 +48,7 @@ public class ApprovalOutboxHelper {
 
     @Transactional
     public void save(OrderApprovalOutboxMessage orderApprovalOutboxMessage) {
-        OrderApprovalOutboxMessage response = approvalOutboxRepository.save(orderApprovalOutboxMessage);
+        final OrderApprovalOutboxMessage response = approvalOutboxRepository.save(orderApprovalOutboxMessage);
         if (response == null) {
             log.error("Could not save OrderApprovalOutboxMessage with outbox id: {}",
                     orderApprovalOutboxMessage.getId());
