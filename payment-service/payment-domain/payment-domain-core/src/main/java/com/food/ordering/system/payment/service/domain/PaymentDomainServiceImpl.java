@@ -29,10 +29,8 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
                                                    CreditEntry creditEntry,
                                                    List<CreditHistory> creditHistories,
                                                    List<String> failureMessages,
-                                                   DomainEventPublisher<PaymentCompletedEvent>
-                                                           paymentCompletedEventDomainEventPublisher,
-                                                   DomainEventPublisher<PaymentFailedEvent>
-                                                           paymentFailedEventDomainEventPublisher) {
+                                                   DomainEventPublisher<PaymentCompletedEvent> paymentCompletedEventDomainEventPublisher,
+                                                   DomainEventPublisher<PaymentFailedEvent> paymentFailedEventDomainEventPublisher) {
         payment.validatePayment(failureMessages);
         payment.initializePayment();
         validateCreditEntry(payment, creditEntry, failureMessages);
@@ -107,8 +105,8 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
     private void validateCreditHistory(CreditEntry creditEntry,
                                        List<CreditHistory> creditHistories,
                                        List<String> failureMessages) {
-        Money totalCreditHistory = getTotalHistoryAmount(creditHistories, TransactionType.CREDIT);
-        Money totalDebitHistory = getTotalHistoryAmount(creditHistories, TransactionType.DEBIT);
+        final Money totalCreditHistory = getTotalHistoryAmount(creditHistories, TransactionType.CREDIT);
+        final Money totalDebitHistory = getTotalHistoryAmount(creditHistories, TransactionType.DEBIT);
 
         if (totalDebitHistory.isGreaterThan(totalCreditHistory)) {
             log.error("Customer with id: {} doesn't have enough credit according to credit history",

@@ -57,13 +57,16 @@ public class PaymentRequestHelper {
     @Transactional
     public PaymentEvent persistPayment(PaymentRequest paymentRequest) {
         log.info("Received payment complete event for order id: {}", paymentRequest.getOrderId());
-        Payment payment = paymentDataMapper.paymentRequestModelToPayment(paymentRequest);
-        CreditEntry creditEntry = getCreditEntry(payment.getCustomerId());
-        List<CreditHistory> creditHistories = getCreditHistory(payment.getCustomerId());
-        List<String> failureMessages = new ArrayList<>();
-        PaymentEvent paymentEvent =
-                paymentDomainService.validateAndInitiatePayment(payment, creditEntry, creditHistories, failureMessages,
-                        paymentCompletedEventDomainEventPublisher, paymentFailedEventDomainEventPublisher);
+        final Payment payment = paymentDataMapper.paymentRequestModelToPayment(paymentRequest);
+        final CreditEntry creditEntry = getCreditEntry(payment.getCustomerId());
+        final List<CreditHistory> creditHistories = getCreditHistory(payment.getCustomerId());
+        final List<String> failureMessages = new ArrayList<>();
+        final PaymentEvent paymentEvent = paymentDomainService.validateAndInitiatePayment(payment,
+                creditEntry,
+                creditHistories,
+                failureMessages,
+                paymentCompletedEventDomainEventPublisher,
+                paymentFailedEventDomainEventPublisher);
         persistDbObjects(payment, creditEntry, creditHistories, failureMessages);
         return paymentEvent;
     }
@@ -71,26 +74,31 @@ public class PaymentRequestHelper {
     @Transactional
     public PaymentEvent persistCancelPayment(PaymentRequest paymentRequest) {
         log.info("Received payment rollback event for order id: {}", paymentRequest.getOrderId());
-        Optional<Payment> paymentResponse = paymentRepository
+        final Optional<Payment> paymentResponse = paymentRepository
                 .findByOrderId(UUID.fromString(paymentRequest.getOrderId()));
         if (paymentResponse.isEmpty()) {
             log.error("Payment with order id: {} could not be found!", paymentRequest.getOrderId());
-            throw new PaymentApplicationServiceException("Payment with order id: " +
-                    paymentRequest.getOrderId() + " could not be found!");
+            throw new PaymentApplicationServiceException("Payment with order id: "
+                    + paymentRequest.getOrderId()
+                    + " could not be found!");
         }
-        Payment payment = paymentResponse.get();
-        CreditEntry creditEntry = getCreditEntry(payment.getCustomerId());
-        List<CreditHistory> creditHistories = getCreditHistory(payment.getCustomerId());
-        List<String> failureMessages = new ArrayList<>();
-        PaymentEvent paymentEvent = paymentDomainService
-                .validateAndCancelPayment(payment, creditEntry, creditHistories, failureMessages,
-                        paymentCancelledEventDomainEventPublisher, paymentFailedEventDomainEventPublisher);
+        final Payment payment = paymentResponse.get();
+        final CreditEntry creditEntry = getCreditEntry(payment.getCustomerId());
+        final List<CreditHistory> creditHistories = getCreditHistory(payment.getCustomerId());
+        final List<String> failureMessages = new ArrayList<>();
+        final PaymentEvent paymentEvent = paymentDomainService.validateAndCancelPayment(payment,
+                creditEntry,
+                creditHistories,
+                failureMessages,
+                paymentCancelledEventDomainEventPublisher,
+                paymentFailedEventDomainEventPublisher);
+
         persistDbObjects(payment, creditEntry, creditHistories, failureMessages);
         return paymentEvent;
     }
 
     private CreditEntry getCreditEntry(CustomerId customerId) {
-        Optional<CreditEntry> creditEntry = creditEntryRepository.findByCustomerId(customerId);
+        final Optional<CreditEntry> creditEntry = creditEntryRepository.findByCustomerId(customerId);
         if (creditEntry.isEmpty()) {
             log.error("Could not find credit entry for customer: {}", customerId.getValue());
             throw new PaymentApplicationServiceException("Could not find credit entry for customer: " +
@@ -100,7 +108,7 @@ public class PaymentRequestHelper {
     }
 
     private List<CreditHistory> getCreditHistory(CustomerId customerId) {
-        Optional<List<CreditHistory>> creditHistories = creditHistoryRepository.findByCustomerId(customerId);
+        final Optional<List<CreditHistory>> creditHistories = creditHistoryRepository.findByCustomerId(customerId);
         if (creditHistories.isEmpty()) {
             log.error("Could not find credit history for customer: {}", customerId.getValue());
             throw new PaymentApplicationServiceException("Could not find credit history for customer: " +

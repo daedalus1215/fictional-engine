@@ -72,7 +72,8 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         final SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(domainEvent.getOrder().getOrderStatus());
 
         paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(orderPaymentOutboxMessage,
-                domainEvent.getOrder().getOrderStatus(), sagaStatus));
+                domainEvent.getOrder().getOrderStatus(),
+                sagaStatus));
 
         approvalOutboxHelper
                 .saveApprovalOutboxMessage(orderDataMapper.orderPaidEventToOrderApprovalEventPayload(domainEvent),
