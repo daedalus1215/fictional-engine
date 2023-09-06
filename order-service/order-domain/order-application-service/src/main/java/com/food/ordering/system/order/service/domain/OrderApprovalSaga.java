@@ -78,7 +78,7 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
     @Override
     @Transactional
     public void rollback(RestaurantApprovalResponse restaurantApprovalResponse) {
-        Optional<OrderApprovalOutboxMessage> orderApprovalOutboxMessageResponse =
+        final Optional<OrderApprovalOutboxMessage> orderApprovalOutboxMessageResponse =
                 approvalOutboxHelper.getApprovalOutboxMessageBySagaIdAndSagaStatus(
                         UUID.fromString(restaurantApprovalResponse.getSagaId()),
                         SagaStatus.PROCESSING);

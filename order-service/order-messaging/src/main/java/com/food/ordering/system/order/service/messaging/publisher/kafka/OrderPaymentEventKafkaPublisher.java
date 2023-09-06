@@ -34,20 +34,19 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
     }
 
     @Override
-    public void publish(OrderPaymentOutboxMessage orderPaymentOutboxMessage,
-                        BiConsumer<OrderPaymentOutboxMessage, OutboxStatus> outboxCallback) {
-        OrderPaymentEventPayload orderPaymentEventPayload =
+    public void publish(OrderPaymentOutboxMessage orderPaymentOutboxMessage, BiConsumer<OrderPaymentOutboxMessage, OutboxStatus> outboxCallback) {
+        final OrderPaymentEventPayload orderPaymentEventPayload =
                 kafkaMessageHelper.getOrderEventPayload(orderPaymentOutboxMessage.getPayload(),
                         OrderPaymentEventPayload.class);
 
-        String sagaId = orderPaymentOutboxMessage.getSagaId().toString();
+        final String sagaId = orderPaymentOutboxMessage.getSagaId().toString();
 
         log.info("Received OrderPaymentOutboxMessage for order id: {} and saga id: {}",
                 orderPaymentEventPayload.getOrderId(),
                 sagaId);
 
         try {
-            PaymentRequestAvroModel paymentRequestAvroModel = orderMessagingDataMapper
+            final PaymentRequestAvroModel paymentRequestAvroModel = orderMessagingDataMapper
                     .orderPaymentEventToPaymentRequestAvroModel(sagaId, orderPaymentEventPayload);
 
             kafkaProducer.send(orderServiceConfigData.getPaymentRequestTopicName(),
