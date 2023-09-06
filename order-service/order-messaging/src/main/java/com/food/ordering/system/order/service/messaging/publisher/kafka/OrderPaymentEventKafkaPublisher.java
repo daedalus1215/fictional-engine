@@ -34,8 +34,7 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
     }
 
     @Override
-    public void publish(OrderPaymentOutboxMessage orderPaymentOutboxMessage,
-                        BiConsumer<OrderPaymentOutboxMessage, OutboxStatus> outboxCallback) {
+    public void publish(OrderPaymentOutboxMessage orderPaymentOutboxMessage, BiConsumer<OrderPaymentOutboxMessage, OutboxStatus> outboxCallback) {
         final OrderPaymentEventPayload orderPaymentEventPayload =
                 kafkaMessageHelper.getOrderEventPayload(orderPaymentOutboxMessage.getPayload(),
                         OrderPaymentEventPayload.class);
@@ -63,9 +62,9 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
             log.info("OrderPaymentEventPayload sent to Kafka for order id: {} and saga id: {}",
                     orderPaymentEventPayload.getOrderId(), sagaId);
         } catch (Exception e) {
-           log.error("Error while sending OrderPaymentEventPayload" +
-                           " to kafka with order id: {} and saga id: {}, error: {}",
-                   orderPaymentEventPayload.getOrderId(), sagaId, e.getMessage());
+            log.error("Error while sending OrderPaymentEventPayload" +
+                            " to kafka with order id: {} and saga id: {}, error: {}",
+                    orderPaymentEventPayload.getOrderId(), sagaId, e.getMessage());
         }
 
 
