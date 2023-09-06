@@ -33,8 +33,7 @@ public class ApprovalOutboxHelper {
 
     @Transactional(readOnly = true)
     public Optional<List<OrderApprovalOutboxMessage>>
-    getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
-            OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
+    getApprovalOutboxMessageByOutboxStatusAndSagaStatus(OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
         return approvalOutboxRepository.findByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME,
                 outboxStatus,
                 sagaStatus);
@@ -77,8 +76,7 @@ public class ApprovalOutboxHelper {
     }
 
     @Transactional
-    public void deleteApprovalOutboxMessageByOutboxStatusAndSagaStatus(OutboxStatus outboxStatus,
-                                                                       SagaStatus... sagaStatus) {
+    public void deleteApprovalOutboxMessageByOutboxStatusAndSagaStatus(OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
         approvalOutboxRepository.deleteByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME, outboxStatus, sagaStatus);
     }
 
