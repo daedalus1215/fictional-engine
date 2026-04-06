@@ -14,15 +14,15 @@ public abstract class BaseEntity<ID> {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseEntity<?> that = (BaseEntity<?>) o;
+        return id.equals(that.id);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        BaseEntity<?> that = (BaseEntity<?>) obj;
-        return id.equals(that.id);
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
