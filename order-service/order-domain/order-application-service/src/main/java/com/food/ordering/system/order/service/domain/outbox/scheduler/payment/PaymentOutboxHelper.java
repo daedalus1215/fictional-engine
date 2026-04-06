@@ -26,7 +26,8 @@ public class PaymentOutboxHelper {
     private final PaymentOutboxRepository paymentOutboxRepository;
     private final ObjectMapper objectMapper;
 
-    public PaymentOutboxHelper(PaymentOutboxRepository paymentOutboxRepository, ObjectMapper objectMapper) {
+    public PaymentOutboxHelper(PaymentOutboxRepository paymentOutboxRepository,
+                               ObjectMapper objectMapper) {
         this.paymentOutboxRepository = paymentOutboxRepository;
         this.objectMapper = objectMapper;
     }
@@ -45,21 +46,15 @@ public class PaymentOutboxHelper {
         return paymentOutboxRepository.findByTypeAndSagaIdAndSagaStatus(ORDER_SAGA_NAME, sagaId, sagaStatus);
     }
 
-    /**
-     * Only being used by PaymentOutboxScheduler and it has @Transaction, so we do not need this one, but incase
-     * there ever is another consumer, we want to add @Transaction on this level as well.
-     *
-     * @param orderPaymentOutboxMessage
-     */
     @Transactional
     public void save(OrderPaymentOutboxMessage orderPaymentOutboxMessage) {
-        final OrderPaymentOutboxMessage response = paymentOutboxRepository.save(orderPaymentOutboxMessage);
-        if (response == null) {
-            log.error("Could not save OrderPaymentOutboxMessage with outbox id: {}", orderPaymentOutboxMessage.getId());
-            throw new OrderDomainException("Could not save OrderPaymentOutboxMessage with outbox id: " +
-                    orderPaymentOutboxMessage.getId());
-        }
-        log.info("OrderPaymentOutboxMessage saved with outbox id: {}", orderPaymentOutboxMessage.getId());
+       OrderPaymentOutboxMessage response = paymentOutboxRepository.save(orderPaymentOutboxMessage);
+       if (response == null) {
+           log.error("Could not save OrderPaymentOutboxMessage with outbox id: {}", orderPaymentOutboxMessage.getId());
+           throw new OrderDomainException("Could not save OrderPaymentOutboxMessage with outbox id: " +
+                   orderPaymentOutboxMessage.getId());
+       }
+       log.info("OrderPaymentOutboxMessage saved with outbox id: {}", orderPaymentOutboxMessage.getId());
     }
 
     @Transactional

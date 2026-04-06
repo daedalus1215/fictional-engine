@@ -1,17 +1,9 @@
 package com.food.ordering.system.payment.service.dataaccess.credithistory.entity;
 
 import com.food.ordering.system.payment.service.domain.valueobject.TransactionType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;

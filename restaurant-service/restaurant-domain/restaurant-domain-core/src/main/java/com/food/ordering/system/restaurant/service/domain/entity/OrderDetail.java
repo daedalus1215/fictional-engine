@@ -8,9 +8,9 @@ import com.food.ordering.system.domain.valueobject.OrderStatus;
 import java.util.List;
 
 public class OrderDetail extends BaseEntity<OrderId> {
+    private OrderStatus orderStatus;
+    private Money totalAmount;
     private final List<Product> products;
-    private final OrderStatus orderStatus;
-    private final Money totalAmount;
 
     private OrderDetail(Builder builder) {
         setId(builder.orderId);

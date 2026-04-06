@@ -1,5 +1,6 @@
 package com.food.ordering.system.order.service.domain.outbox.scheduler.approval;
 
+import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.outbox.model.approval.OrderApprovalOutboxMessage;
 import com.food.ordering.system.outbox.OutboxScheduler;
 import com.food.ordering.system.outbox.OutboxStatus;
@@ -25,14 +26,14 @@ public class RestaurantApprovalOutboxCleanerScheduler implements OutboxScheduler
     @Override
     @Scheduled(cron = "@midnight")
     public void processOutboxMessage() {
-        final Optional<List<OrderApprovalOutboxMessage>> outboxMessagesResponse =
+        Optional<List<OrderApprovalOutboxMessage>> outboxMessagesResponse =
                 approvalOutboxHelper.getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
                         OutboxStatus.COMPLETED,
                         SagaStatus.SUCCEEDED,
                         SagaStatus.FAILED,
                         SagaStatus.COMPENSATED);
         if (outboxMessagesResponse.isPresent()) {
-            final List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
+            List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderApprovalOutboxMessage for clean-up. The payloads: {}",
                     outboxMessages.size(),
                     outboxMessages.stream().map(OrderApprovalOutboxMessage::getPayload)
